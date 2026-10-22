@@ -30,5 +30,13 @@ describe("Randomizer", () => {
 
         expect(() => randomizer.pickRandom(members)).toThrow();
     });
-});
 
+    it("should allow for rerolling the randomizer", () => {
+        const members = ["Paulina", "Leslie", "John"];
+        
+        const result1 = randomizer.pickRandom(members);
+        const result2 = randomizer.pickRandom(members);
+
+        expect(result1).not.toBe(result2);
+    });
+});
