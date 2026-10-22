@@ -5,12 +5,13 @@ describe("Randomizer", () => {
 
     const randomizer = new Randomizer();
 
-    it("should return the only member", () => {
-        const members = ["Paulina"];
+    it("should return only one member from the group", () => {
+    const members = ["Paulina", "Leslie", "John"];
 
-        const result = randomizer.pickRandom(members);
+    const result = randomizer.pickRandom(members);
 
-        expect(result).toBe("Paulina");
+    expect(members).toContain(result);
+    expect(typeof result).toBe("string");
     });
 
     it("should reject an empty group", () => {
