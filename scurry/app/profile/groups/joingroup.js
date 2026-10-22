@@ -1,31 +1,35 @@
 export class GroupManager {
-  constructor(users = []) {
+constructor(users = []) {
     this.users = users;
-  }
+}
 
-  getGroupCount(userId) {
+getGroupCount(userId) {
     // TODO: real implementation later
     return 0;
-  }
+}
 
-  joinGroup(group, userId, code) {
+    joinGroup(group, userId, code) {
     if (code !== group.code) {
-      throw new Error("Invalid group code");
+        throw new Error("Invalid group code");
     }
 
     if (group.members.includes(userId)) {
-      throw new Error("Already in this group");
+        throw new Error("Already in this group");
     }
 
     if (this.getGroupCount(userId) >= 10) {
-      throw new Error("You can only be in 10 groups");
+        throw new Error("You can only be in 10 groups");
+    }
+
+    if (Date.now() > group.codeExpiresAt) {
+        throw new Error("Group code expired");
     }
 
     return {
-      ...group,
-      members: [...group.members, userId],
+        ...group,
+        members: [...group.members, userId],
     };
-  }
+}
 
   // removeMember(group, requesterId, targetId, confirmed) { ... }
 }

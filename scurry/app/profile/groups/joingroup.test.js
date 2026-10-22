@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { GroupManager } from "./groupManager";
 
 describe("Join group", () => {
@@ -12,6 +12,7 @@ describe("Join group", () => {
         id: "group1",
         creatorId: "creator",
         code: "SCURRY123",
+        codeExpiresAt: Date.now() + 24 * 60 * 60 * 1000, // valid for 24h
         members: ["creator", "leslie"],
         };
     });
@@ -19,6 +20,14 @@ describe("Join group", () => {
     it("does not let someone join with an invalid code", () => {
         expect(() => service.joinGroup(group, "paulina", "WRONG")).toThrow(
         "Invalid group code"
+        );
+    });
+
+    it("does not let someone join with an expired code", () => {
+        group.codeExpiresAt = Date.now() - 1000; // expired 1 second ago
+
+        expect(() => service.joinGroup(group, "paulina", "SCURRY123")).toThrow(
+            "Group code expired"
         );
     });
 
