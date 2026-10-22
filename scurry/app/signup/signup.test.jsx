@@ -41,21 +41,26 @@ describe("Signup", () => {
 
   it("does not submit with only an email", async () => {
     await fillAndClick("test@example.com", "");
+    expect(passwordBox().checkValidity()).toBe(false);
     expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
   });
 
   it("does not submit with only a password", async () => {
     await fillAndClick("", "password123");
+    expect(emailBox().checkValidity()).toBe(false);
     expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
   });
 
   it("does not submit with both empty", async () => {
     await fillAndClick("", "");
+    expect(emailBox().checkValidity()).toBe(false);
+    expect(passwordBox().checkValidity()).toBe(false);
     expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
   });
 
   it("does not submit with an invalid email", async () => {
     await fillAndClick("not-an-email", "password123");
+    expect(emailBox().checkValidity()).toBe(false);
     expect(createUserWithEmailAndPassword).not.toHaveBeenCalled();
   });
 
