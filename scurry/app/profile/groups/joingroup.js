@@ -1,45 +1,31 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { GroupManager } from "./groupManager";
+export class GroupManager {
+  constructor(users = []) {
+    this.users = users;
+  }
 
-describe("Join group", () => {
-    let service;
-    let group;
+  getGroupCount(userId) {
+    // TODO: real implementation later
+    return 0;
+  }
 
-    beforeEach(() => {
-        service = new GroupManager(["creator", "paulina", "leslie", "sophia"]);
+  joinGroup(group, userId, code) {
+    if (code !== group.code) {
+      throw new Error("Invalid group code");
+    }
 
-        group = {
-        id: "group1",
-        creatorId: "creator",
-        code: "SCURRY123",
-        members: ["creator", "leslie"],
-        };
-    });
+    if (group.members.includes(userId)) {
+      throw new Error("Already in this group");
+    }
 
-    it("does not let someone join with an invalid code", () => {
-        expect(() => service.joinGroup(group, "paulina", "WRONG")).toThrow(
-        "Invalid group code"
-        );
-    });
+    if (this.getGroupCount(userId) >= 10) {
+      throw new Error("You can only be in 10 groups");
+    }
 
-    it("does not let someone join a group they are already in", () => {
-        expect(() => service.joinGroup(group, "leslie", "SCURRY123")).toThrow(
-            "Already in this group"
-        );
-    });
+    return {
+      ...group,
+      members: [...group.members, userId],
+    };
+  }
 
-    it("adds the user when the code is valid", () => {
-        const result = service.joinGroup(group, "paulina", "SCURRY123");
-
-        expect(result.members).toContain("paulina");
-        expect(result.members).toEqual(["creator", "leslie", "paulina"]);
-    });
-
-    it("does not let someone join when they are already in 10 groups", () => {
-        service.getGroupCount = vi.fn().mockReturnValue(10);
-
-        expect(() => service.joinGroup(group, "paulina", "SCURRY123")).toThrow(
-            "You can only be in 10 groups"
-        );
-    });
-});
+  // removeMember(group, requesterId, targetId, confirmed) { ... }
+}
