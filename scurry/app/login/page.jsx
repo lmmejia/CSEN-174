@@ -16,6 +16,7 @@ export default function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             // Redirect to home page or dashboard after successful login
+            window.location.href = '/profile'; // Redirect to home page after successful login
         } catch (error) {
             console.error('Error logging in:', error);
         }
@@ -26,6 +27,7 @@ export default function Login() {
         try {
             await signInWithPopup(auth, provider);
             // Redirect to home page or dashboard after successful login
+            window.location.href = '/profile'; // Redirect to home page after successful login
         } catch (error) {
             console.error('Error logging in with Google:', error);
         }
@@ -50,6 +52,7 @@ export default function Login() {
                 <button type="submit">Login</button>
             </form>
             <button onClick={handleGoogleLogin}>Login with Google</button>
+            <button onClick={() => window.location.href = '/signup'}>Sign Up</button>
         </div>
     );  
 }
