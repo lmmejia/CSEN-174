@@ -8,8 +8,14 @@ import Signup from "./page";
 vi.mock("firebase/auth", () => ({
   createUserWithEmailAndPassword: vi.fn(),
 }));
+vi.mock("firebase/firestore", () => ({
+  doc: vi.fn(),
+  setDoc: vi.fn().mockResolvedValue(undefined),
+  serverTimestamp: vi.fn(),
+}));
 vi.mock("../../lib/firebase", () => ({
   auth: { mock: true },
+  db: { mock: true },
 }));
 
 //helper functions to get the email box, password box, sign up button, and message
@@ -22,6 +28,8 @@ async function fillAndClick(email, password) {
   const user = userEvent.setup();
   if (email) await user.type(emailBox(), email);
   if (password) await user.type(passwordBox(), password);
+  await user.type(screen.getByPlaceholderText("First Name"), "John");
+  await user.type(screen.getByPlaceholderText("Last Name"), "Doe");
   await user.click(signUpButton());
 }
 
