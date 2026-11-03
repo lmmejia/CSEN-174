@@ -1,29 +1,31 @@
-// Profile page for the Scurry app
 "use client";
-import { useState, useEffect } from "react";
-import { auth } from "../../lib/firebase";
+import { useState } from "react";
+import Friends from "./friends/friends";
 
 export default function Profile() {
-    const [user, setUser] = useState(null);
+  const [openPopup, setOpenPopup] = useState(null);
 
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            setUser(user);
-        });
-        return () => unsubscribe();
-    }, []);
+  return (
+    <main>
+      <h1>Profile</h1>
 
-    return (
-        <main>
-            <h1>Profile</h1>
-            {user ? (
-                <div>
-                    <p>Email: {user.email}</p>
-                    <p>User ID: {user.uid}</p>
-                </div>
-            ) : (
-                <p>Loading...</p>
-            )}
-        </main>
-    );
+      <button onClick={() => setOpenPopup("groups")}>groups</button>
+      <button onClick={() => setOpenPopup("friends")}>friends</button>
+
+      {openPopup === "friends" && (
+        <Friends
+          friends={[]}
+          onAddFriend={async (code) => console.log("add", code)}
+          onClose={() => setOpenPopup(null)}
+        />
+      )}
+
+      {openPopup === "groups" && (
+        <div>
+          <h2>groups</h2>
+          <button onClick={() => setOpenPopup(null)}>close</button>
+        </div>
+      )}
+    </main>
+  );
 }

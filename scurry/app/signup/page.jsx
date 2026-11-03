@@ -4,8 +4,29 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../lib/firebase";
 import { tags } from "./tags";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, collection, query, where, getDocs} from "firebase/firestore";
 import { avatars } from "./profilepics";
+
+//create a custom code for friends
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+function randomCode(length = 6) {
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+  }
+  return result;
+}
+
+async function generateUniqueCode(){
+  while(true){
+    const code = randomCode();
+    const snap = await getDocs(query(collection(db, "users"), where("friendCode", "==", code)));
+    if(snap.empty){
+      return code;
+    }
+  }
+}
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -27,6 +48,8 @@ export default function Signup() {
         lastName,
         interests,
         avatar,
+        friendCode: await generateUniqueCode(), // generate a unique friend code
+        friends: [],
         createdAt: serverTimestamp(),
       });
 
