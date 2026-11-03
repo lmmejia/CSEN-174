@@ -1,0 +1,335 @@
+[
+  {
+    "name": "Ramen Taka, Santa Clara, California",
+    "lat": 37.3443795,
+    "lng": -121.932569,
+    "address": "Ramen Taka, 2219, The Alameda, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["food"],
+    "price": "$$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Voyager Craft Coffee, Santa Clara, California",
+    "lat": 37.344485919127216,
+    "lng": -121.93261669320677,
+    "address": "Voyager Craft Coffee, 2221 The Alameda, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["food", "coffee"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Starbucks, Santa Clara, California",
+    "lat": 37.3522761783747,
+    "lng": -121.93659260444262,
+    "address": "Starbucks, 495 El Camino Real, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["food", "coffee"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Nabi Cat Cafe, Santa Clara, California",
+    "lat": 37.3446009,
+    "lng": -121.933176,
+    "address": "Nabi Cat Cafe, 2255, The Alameda, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["food", "coffee", "matcha"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "1 Oz Coffee, Santa Clara, California",
+    "lat": 37.353083,
+    "lng": -121.9393896,
+    "address": "1 Oz Coffee, Benton Street, Santa Clara, Santa Clara County, California, 95053, United States",
+    "categories": ["matcha", "coffee", "dessert"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Ume tea, Santa Clara, California",
+    "lat": 37.34441019593784,
+    "lng": -121.9324754072253,
+    "address": "Ume Tea, 2215 The Alameda, Santa Clara, Santa Clara County, California, 94306, United States",
+    "categories": ["boba", "food"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Frozo's, Santa Clara, California",
+    "lat": 37.3504355,
+    "lng": -121.9439242,
+    "address": "Frozo's, 1000, Lafayette Street, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["boba", "dessert"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "OMG Tea, Santa Clara, California",
+    "lat": 37.3483523,
+    "lng": -121.9460406,
+    "address": "OMG Tea, 1171, Homestead Road, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["boba"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Home Eat, Santa Clara, California",
+    "lat": 37.35467024104455, 
+    "lng": -121.94215161430893,
+    "address": "Home Eat;汉家宴, 638 El Camino Real, Santa Clara, Santa Clara County, California, 95112, United States",
+    "categories": ["food"],
+    "price": "$$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Seven-Eleven, Santa Clara, California",
+    "lat": 37.351670993679484,
+    "lng": -121.94105574466438,
+    "address": "7-Eleven, 2800 Benton St, Santa Clara,Santa Clara County, California, 94040, United States",
+    "categories": ["food", "dessert"],
+    "price": "$",
+    "transport": "walking"
+  },
+  {
+    "name": "Akita Sushi, Santa Clara, California",
+    "lat": 37.34462499765256,
+    "lng": -121.93313416659306,
+    "address": "Akita Sushi, 2251 The Alameda, Santa Clara,  Santa Clara County, California, 95118, United States",
+    "categories": ["food"],
+    "price": "$$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Caltrain, Santa Clara, California",
+    "lat": 37.35346683872299,
+    "lng": -121.936808147886,
+    "address": "Caltrain, 1001 Railroad Ave, Santa Clara, Santa Clara County, California, 95110, United States",
+    "categories": ["transport"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Cramer's, Santa Clara, California",
+    "lat": 37.3523355,
+    "lng": -121.9365017,
+    "address": "Cramer’s Bagels #131, 495, El Camino Real, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["food", "dessert"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Big Mug, Santa Clara, California",
+    "lat": 37.3515494,
+    "lng": -121.9809936,
+    "address": "Big Mug Coffee Roaster, 3014, El Camino Real, Santa Clara, Santa Clara County, California, 95051, United States",
+    "categories": ["food", "dessert"],
+    "price": "$$",
+    "transport": "car"
+  },
+  {
+    "name": "Santana Row, Santa Clara, California",
+    "lat": 37.3209796,
+    "lng": -121.9486002,
+    "address": "Santana Row, San Jose, Santa Clara County, California, United States",
+    "categories": ["food", "dessert", "shopping"],
+    "price": "$$$",
+    "transport": "car"
+  },
+  {
+    "name": "In-n-Out Burger, Santa Clara, California",
+    "lat": 37.3503028,
+    "lng": -121.9218643,
+    "address": "In-N-Out Burger, 550, Newhall Drive, North San Jose, San Jose, Santa Clara County, California, 95110, United States",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "McDonald's, Santa Clara, California",
+    "lat": 37.35687863543494,
+    "lng": -121.93652955569644,
+    "address": "McDonald's,1451 Coleman Ave, Santa Clara, Santa Clara County, California, 95121, United States",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "Pier 402, Santa Clara, California",
+    "lat": 37.3253797,
+    "lng": -121.9113628,
+    "address": "Pier 402, Race Street, Buena Vista, San Jose, Santa Clara County, California, 95126, United States",
+    "categories": ["food", "dessert"],
+    "price": "$$$",
+    "transport": "car"
+  },
+  {
+    "name": "Space Cat, Santa Clara, California",
+    "lat": 37.3238436,
+    "lng": -121.914516,
+    "address": "Space Cat Comics, 1415, West San Carlos Street, Buena Vista, San Jose, Santa Clara County, California, 95126, United States",
+    "categories": ["activity", "shopping"],
+    "price": "$$$",
+    "transport": "car"
+  },
+  {
+    "name": "Target, Santa Clara, California",
+    "lat": 37.350006338637876,
+    "lng": -121.96063977750735,
+    "address": "Target, 2004 El Camino Real, Santa Clara, Santa Clara County, California, 95134, United States",
+    "categories": ["shopping"],
+    "price": "$$",
+    "transport": "car"
+  },
+  {
+    "name": "Chick-fil-A, Santa Clara, California",
+    "lat": 37.35211379812234,
+    "lng": -121.95875837351136,
+    "address": "Chick-fil-A, 18599, Morgan Hill, Santa Clara County, California, 95037, United States",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "Popeyes, Santa Clara, California",
+    "lat": 37.35203808533584,
+    "lng": -121.95668113351849,
+    "address": "Popeyes, 1790 El Camino Real, Santa Clara, Santa Clara County, California, 95050, United States",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "Jack in the Box, Santa Clara, California",
+    "lat": 37.354971055980215,
+    "lng": -121.94656748984677,
+    "address": "Jack in the Box, 911 El Camino Real, Santa Clara, Santa Clara County, California, 95116, United States",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "Denny's, Santa Clara, California",
+    "lat": 37.35268072318293,
+    "lng": -121.95685721706315,
+    "address": "Denny's, 1745 El Camino Real, Santa Clara, Santa Clara County, California, 95121, United States",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "Happy Lemon, Santa Clara, California",
+    "lat": 37.34050808937057,
+    "lng": -121.90644106253814,
+    "address": "Happy Lemon, 567 Coleman Ave #10, San Jose, Santa Clara County, California, 95123, United States",
+    "categories": ["food", "dessert", "boba"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "IHOP, Santa Clara, California",
+    "lat": 37.348141367341775,
+    "lng": -121.8990567433472,
+    "address": "IHOP, 644 N First St, San Jose,  Santa Clara County, California, 95123, United States",
+    "categories": ["food"],
+    "price": "$$",
+    "transport": "car"
+  },
+  {
+    "name": "Chili's, Santa Clara, California",
+    "lat": 37.340478935382535,
+    "lng": -121.90576405078839,
+    "address": "Chili's, 543 Coleman Ave, San Jose,Santa Clara County, California, 95123, United States",
+    "categories": ["food"],
+    "price": "$$",
+    "transport": "car"
+  },
+  {
+    "name": "Fantasia, Santa Clara, California",
+    "lat": 37.335992311154094,
+    "lng": -122.01590361131437,
+    "address": "Fantasia, 10933 N Wolfe Rd, Cupertino, Santa Clara County, California, 95035, United States",
+    "categories": ["food"],
+    "price": "$$",
+    "transport": "car"
+  },
+  {
+    "name": "Shawarmaji",
+    "lat": 37.3445557,
+    "lng": -121.9328014,
+    "address": "2281 The Alameda, Santa Clara, CA 95050",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "walking"
+  },
+  {
+    "name": "TOGOS",
+    "lat": 37.3503696,
+    "lng": -121.9438895,
+    "address": "1000 Lafayette St, Santa Clara, CA 95050",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "walking"
+  },
+  {
+    "name": "Ike's Sandwiches",
+    "lat": 37.344481,
+    "lng": -121.932906,
+    "address": "2235 The Alameda, Santa Clara, CA 95050",
+    "categories": ["food"],
+    "price": "$",
+    "transport": "walking"
+  },
+  {
+    "name": "Westfield Valley Fair",
+    "lat": 37.3253267,
+    "lng": -121.9448415,
+    "address": "2855 Stevens Creek Blvd, Santa Clara, CA 95050",
+    "categories": ["shopping", "food", "activity"],
+    "price": "$$$",
+    "transport": "car"
+  },
+  {
+    "name": "7 Leaves Cafe",
+    "lat": 37.3211168,
+    "lng": -121.9726173,
+    "address": "375 Saratoga Ave, San Jose, CA 95129",
+    "categories": ["food", "boba", "coffee"],
+    "price": "$",
+    "transport": "car"
+  },
+  {
+    "name": "Su's Mongolian BBQ",
+    "lat": 37.3541544,
+    "lng": -121.9490798,
+    "address": "1111 El Camino Real, Santa Clara, CA 95050",
+    "categories": ["food"],
+    "price": "$$$",
+    "transport": "car"
+  },
+  {
+    "name": "Caffe:Inn",
+    "lat": 37.3449582,
+    "lng": -121.934366,
+    "address": "2421 The Alameda #101, Santa Clara, CA 95050",
+    "categories": ["food", "coffee", "boba", "dessert"],
+    "price": "$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Card Shop Santa Clara",
+    "lat": 37.348403,
+    "lng": -121.9458128,
+    "address": "1171 Homestead Rd, Santa Clara, CA 95050",
+    "categories": ["shopping", "activity"],
+    "price": "$$$",
+    "transport": "walking"
+  },
+  {
+    "name": "Gamer's Heaven",
+    "lat": 37.348403,
+    "lng": -121.9458128,
+    "address": "1171 Homestead Rd, Santa Clara, CA 95050",
+    "categories": ["shopping", "activity"],
+    "price": "$$$",
+    "transport": "walking"
+  }
+]
