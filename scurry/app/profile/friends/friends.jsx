@@ -1,24 +1,94 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect} from "react";
+import { auth, db } from "../../../lib/firebase";
+import {
+  doc, getDoc, updateDoc, arrayUnion, onSnapshot, collection, query, where, getDocs,
+} from "firebase/firestore";
 
-export default function Friends({friends = [], onAddFriend, onClose}) {
-  
+export default function Friends({ onClose }) {
+  const [friends, setFriends] = useState([]);
   const [friendCode, setFriendCode] = useState("");
   const [error, setError] = useState("");
 
-  async function handleAdd(){
+  useEffect(() => {
+    let unsubSnapshot = null; // Initialize unsubSnapshot to null
+
+    const unsubAuth = auth.onAuthStateChanged(async (user) => {
+      if (unsubSnapshot) {
+        unsubSnapshot(); // Unsubscribe from the previous snapshot listener
+      }
+      const u = user;
+      if (!u) return;
+
+      // live updates: runs again whenever your friends array changes
+      unsubSnapshot = onSnapshot(doc(db, "users", u.uid), async (snap) => {
+        const ids = snap.data()?.friends || [];
+        const docs = await Promise.all(ids.map((id) => getDoc(doc(db, "users", id))));
+        setFriends(
+          docs
+            .filter((d) => d.exists())
+            .map((d) => ({ id: d.id, name: `${d.data().firstName} ${d.data().lastName}` }))
+        );
+      });
+    });
+
+    return () => {
+      unsubAuth();
+      if (unsubSnapshot) unsubSnapshot();
+    };
+  }, []);
+
+
+  async function handleAdd() {
     setError("");
-    try{
-        await onAddFriend(friendCode);
-        setFriendCode("");
-    } catch (err){
-        setError(err.message);
-    }       
+    try {
+      const myUid = auth.currentUser?.uid;
+      const code = friendCode.trim();
+      if (!code) {
+        setError("Friend code cannot be empty");
+        return;
+      }
+
+      // Check if the friend code exists
+      const snap = await getDocs(query(collection(db, "users"), where("friendCode", "==", code)));
+      if (snap.empty) {
+        setError("Friend code does not exist");
+        return;
+      }
+
+      const friendDoc = snap.docs[0];
+      const friendUid = friendDoc.id;
+
+      // Prevent adding yourself as a friend
+      if (friendUid === myUid) {
+        setError("Cannot add yourself as a friend");
+        return;
+      }
+
+      // Check if already friends
+      const myDoc = await getDoc(doc(db, "users", myUid));
+      const myFriends = myDoc.data()?.friends || [];
+      if (myFriends.includes(friendUid)) {
+        setError("User is already a friend");
+        return;
+      }
+
+      // Add friend to both users' friends arrays
+      await updateDoc(doc(db, "users", myUid), {
+        friends: arrayUnion(friendUid),
+      });
+      await updateDoc(doc(db, "users", friendUid), {
+        friends: arrayUnion(myUid),
+      });
+      setFriendCode("");
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
-  return(
+  return (
     <div>
-        <h1>Add a Friend</h1>
+      <h1>Add a Friend</h1>
       {friends.length === 0 ? (
         <p>none :c</p>
       ) : (
