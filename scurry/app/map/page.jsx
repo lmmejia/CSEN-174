@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import locations from '../data/geocoded.json';
 
@@ -8,6 +8,30 @@ const SCU_CENTER = [37.3496, -121.9390];
 
 export default function MapPage() {
     const containerRef = useRef(null);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTransport, setSelectedTransport] = useState([]);
+    const [selectedPrices, setSelectedPrices] = useState([]);
+
+    const filteredPlaces = useMemo(() => {
+        return locations.filter((location) => {
+        const matchesCategory =
+            selectedTags.length > 0 &&
+            location.categories.some((category) =>
+                selectedTags.includes(category)
+            );
+
+        const matchesTransport =
+            selectedTransport.length === 0 ||
+            selectedTransport.includes(location.transport);
+
+        const matchesPrice =
+            selectedPrices.length === 0 ||
+            selectedPrices.includes(location.price);
+
+        return matchesCategory && matchesTransport && matchesPrice;
+        });    
+    }, [selectedTags, selectedTransport, selectedPrices]);
+
 
     useEffect(() => {
         let map;
@@ -35,7 +59,7 @@ export default function MapPage() {
         }).addTo(map);
 
         
-        locations.forEach((location) => {
+        filteredPlaces.forEach((location) => {
             L.marker([location.lat, location.lng], { icon: markerIcon })
             .addTo(map)
             .bindPopup(location.name);
@@ -47,12 +71,66 @@ export default function MapPage() {
         cancelled = true;
         if (map) map.remove();
         };
-    }, []);
+    }, [filteredPlaces]);
 
     return (
+        <div>
+        <div>
+        {['food', 'coffee', 'shopping', 'activity'].map((tag) => (
+            <button key={tag}
+            onClick={() =>
+                setSelectedTags((prev) =>
+                prev.includes(tag)
+                    ? prev.filter((t) => t !== tag)
+                    : [...prev, tag]
+                )
+            }
+            >
+            {tag}
+            </button>
+        ))}
+        </div>
+
+        <div>
+            <h3>Transportation</h3>
+
+            {['walking', 'car'].map((transport) => (
+                <button
+                key={transport}
+                onClick={() =>
+                    setSelectedTransport((prev) =>
+                    prev.includes(transport)
+                        ? prev.filter((t) => t !== transport)
+                        : [...prev, transport]
+                    )
+                }
+                >
+                {transport}
+                </button>
+            ))}
+
+            <h3>Price</h3>
+
+            {["$", "$$", "$$$"].map((price) => (
+                <button
+                key={price}
+                onClick={() =>
+                    setSelectedPrices((prev) =>
+                    prev.includes(price)
+                        ? prev.filter((p) => p !== price)
+                        : [...prev, price]
+                    )
+                }
+                >
+                {price}
+                </button>
+            ))}
+        </div>
+
         <div
         ref={containerRef}
         style={{ height: '100vh', width: '100%' }}
         />
+        </div>
     );
 }
