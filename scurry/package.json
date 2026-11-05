@@ -10,7 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "firebase": "^13.0.0",
+    "firebase": "^13.2.0",
     "leaflet": "^1.9.4",
     "next": "16.4.2",
     "react": "19.3.0",
