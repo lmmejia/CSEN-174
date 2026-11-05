@@ -2,7 +2,7 @@
 import { useState, useEffect} from "react";
 import { auth, db } from "../../../lib/firebase";
 import {
-  doc, getDoc, updateDoc, arrayUnion, onSnapshot, collection, query, where, getDocs,
+  doc, getDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot, collection, query, where, getDocs,
 } from "firebase/firestore";
 
 export default function Friends({ onClose }) {
@@ -86,6 +86,27 @@ export default function Friends({ onClose }) {
     }
   }
 
+  async function handleRemove(friendUid) {
+    setError("");
+    try {
+      const myUid = auth.currentUser?.uid;
+      if (!myUid) {
+        setError("Log in first");
+        return;
+      }
+
+      // Remove this person from both users' friends arrays
+      await updateDoc(doc(db, "users", myUid), {
+        friends: arrayRemove(friendUid),
+      });
+      await updateDoc(doc(db, "users", friendUid), {
+        friends: arrayRemove(myUid),
+      });
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div>
       <h1>Add a Friend</h1>
@@ -94,7 +115,9 @@ export default function Friends({ onClose }) {
       ) : (
         <ul>
           {friends.map((f) => (
-            <li key={f.id}>{f.name}</li>
+            <li key={f.id}>
+              {f.name} <button onClick={() => handleRemove(f.id)}>remove</button>
+            </li>
           ))}
         </ul>
       )}
