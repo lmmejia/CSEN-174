@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Friends from "./friends/friends";
+import Groups from "./groups/groups";
 
 export default function Profile() {
   const [openPopup, setOpenPopup] = useState(null);
@@ -21,10 +22,7 @@ export default function Profile() {
       )}
 
       {openPopup === "groups" && (
-        <div>
-          <h2>groups</h2>
-          <button onClick={() => setOpenPopup(null)}>close</button>
-        </div>
+        <Groups onClose={() => setOpenPopup(null)} />
       )}
     </main>
   );
