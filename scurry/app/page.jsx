@@ -1,9 +1,17 @@
+import Link from "next/link";
+import "./styles/landing.css";
+
 //Landing page with nav
 export default function Landing() {
   return (
-    <div>
+    <main className="landing-container">
       <h1>Welcome to Scurry!</h1>
-      <p>This is the landing page of the Scurry app.</p>
-    </div>
+      <p>Do not waste time, start scurrying around campus</p>
+
+      <div className="button-container">
+        <Link href="/login" className="login-button">LOG IN </Link>
+        <Link href="/signup" className="signup-button">SIGN UP</Link>
+      </div>
+    </main>
   );
 }
