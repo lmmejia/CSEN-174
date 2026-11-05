@@ -4,8 +4,10 @@ import { auth, db } from "../../../lib/firebase";
 import {
   addDoc,
   arrayUnion,
+  arrayRemove,
   collection,
   doc,
+  getDoc,
   onSnapshot,
   query,
   serverTimestamp,
@@ -37,9 +39,12 @@ async function generateUniqueCode() {
 
 export default function Groups({ onClose }) {
   const [groups, setGroups] = useState([]);
+  const [names, setNames] = useState({});
+  const [uid, setUid] = useState(null);
   const [inviteCode, setInviteCode] = useState("");
   const [groupName, setGroupName] = useState("");
   const [createdCode, setCreatedCode] = useState("");
+  const [addCodes, setAddCodes] = useState({});
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -50,15 +55,31 @@ export default function Groups({ onClose }) {
         unsubSnapshot(); // Unsubscribe from the previous snapshot listener
       }
       if (!user) {
+        setUid(null);
         setGroups([]);
+        setNames({});
         return;
       }
+
+      setUid(user.uid);
 
       // live updates: runs again whenever a group this user is in changes
       unsubSnapshot = onSnapshot(
         query(collection(db, "groups"), where("members", "array-contains", user.uid)),
-        (snap) => {
-          setGroups(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+        async (snap) => {
+          const list = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+          setGroups(list);
+
+          // look up a display name for each member
+          const ids = [...new Set(list.flatMap((g) => g.members || []))];
+          const docs = await Promise.all(ids.map((id) => getDoc(doc(db, "users", id))));
+          const next = {};
+          docs.forEach((d) => {
+            if (d.exists()) {
+              next[d.id] = `${d.data().firstName} ${d.data().lastName}`;
+            }
+          });
+          setNames(next);
         }
       );
     });
@@ -144,6 +165,80 @@ export default function Groups({ onClose }) {
     }
   }
 
+  async function handleAddMember(group) {
+    setError("");
+    try {
+      const myUid = auth.currentUser?.uid;
+      if (!myUid) {
+        setError("Log in first");
+        return;
+      }
+
+      // only the lead can add people
+      if (group.creatorId !== myUid) {
+        setError("Only the group creator can add members");
+        return;
+      }
+
+      const code = (addCodes[group.id] || "").trim();
+      if (!code) {
+        setError("Friend code cannot be empty");
+        return;
+      }
+
+      // find the person by the friend code on their account
+      const snap = await getDocs(query(collection(db, "users"), where("friendCode", "==", code)));
+      if (snap.empty) {
+        setError("Friend code does not exist");
+        return;
+      }
+
+      const memberId = snap.docs[0].id;
+      if (memberId === myUid) {
+        setError("Cannot add yourself");
+        return;
+      }
+      if ((group.members || []).includes(memberId)) {
+        setError("Already in this group");
+        return;
+      }
+
+      await updateDoc(doc(db, "groups", group.id), {
+        members: arrayUnion(memberId),
+      });
+      setAddCodes((prev) => ({ ...prev, [group.id]: "" }));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleRemoveMember(group, memberId) {
+    setError("");
+    try {
+      const myUid = auth.currentUser?.uid;
+      if (!myUid) {
+        setError("Log in first");
+        return;
+      }
+
+      // only the lead can remove people, and the lead stays in the group
+      if (group.creatorId !== myUid) {
+        setError("Only the group creator can remove members");
+        return;
+      }
+      if (memberId === group.creatorId) {
+        setError("The group creator cannot be removed");
+        return;
+      }
+
+      await updateDoc(doc(db, "groups", group.id), {
+        members: arrayRemove(memberId),
+      });
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <div>
       <h1>Add to Scurry</h1>
@@ -181,11 +276,40 @@ export default function Groups({ onClose }) {
         <p>none</p>
       ) : (
         <ul>
-          {groups.map((g) => (
-            <li key={g.id}>
-              {g.name} — {g.code}
-            </li>
-          ))}
+          {groups.map((g) => {
+            const isLead = g.creatorId === uid;
+            return (
+              <li key={g.id}>
+                <p>
+                  {g.name} — {g.code}
+                  {isLead ? " (you are the lead)" : ""}
+                </p>
+                <ul>
+                  {(g.members || []).map((id) => (
+                    <li key={id}>
+                      {names[id] || "member"}
+                      {id === g.creatorId ? " (lead)" : ""}
+                      {isLead && id !== g.creatorId && (
+                        <button onClick={() => handleRemoveMember(g, id)}>remove</button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                {isLead && (
+                  <div>
+                    <input
+                      value={addCodes[g.id] || ""}
+                      onChange={(e) =>
+                        setAddCodes((prev) => ({ ...prev, [g.id]: e.target.value }))
+                      }
+                      placeholder="enter friend code"
+                    />
+                    <button onClick={() => handleAddMember(g)}>add</button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
 
