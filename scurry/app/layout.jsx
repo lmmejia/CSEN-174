@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
         <title>Scurry</title>
       </head>
       <body>
-        <navbar />
+        <Navbar />
         {children}
       </body>
     </html>
