@@ -6,6 +6,7 @@ import locations from '../data/geocoded.json';
 import { auth, db } from '../../lib/firebase';
 import { doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { BookmarkManager } from './bookmarks';
+import '../styles/map.css';
 
 const SCU_CENTER = [37.3496, -121.9390];
 const bookmarkManager = new BookmarkManager();
@@ -203,69 +204,86 @@ export default function MapPage() {
         };
     }, [filteredPlaces]);
 
-    return (
-        <div>
-        <div>
-        {['food', 'coffee', 'shopping', 'activity'].map((tag) => (
-            <button key={tag}
-            onClick={() =>
-                setSelectedTags((prev) =>
-                prev.includes(tag)
-                    ? prev.filter((t) => t !== tag)
-                    : [...prev, tag]
-                )
-            }
-            >
-            {tag}
-            </button>
-        ))}
-        <button
-            onClick={() => setShowBookmarksOnly((prev) => !prev)}
-        >
-            bookmarks
-        </button>
-        </div>
+return (
+    <main className="map-page">
+        <header className="map-header">
+            <h1>Find a place to Scurry</h1>
+            <p>click a pin to bookmark a hangout spot</p>
+        </header>
 
-        <div>
-            <h3>Transportation</h3>
+        <div className="map-content">
+            <div ref={containerRef} className="map-container" />
 
-            {['walking', 'car'].map((transport) => (
+            <aside className="map-panel">
+            <div className="filter-buttons">
+                <h2>Categories</h2>
+                {['food', 'coffee', 'shopping', 'activity'].map((tag) => (
                 <button
-                key={transport}
-                onClick={() =>
-                    setSelectedTransport((prev) =>
-                    prev.includes(transport)
-                        ? prev.filter((t) => t !== transport)
-                        : [...prev, transport]
+                    key={tag}
+                    className={selectedTags.includes(tag) ? 'filter-btn active' : 'filter-btn'}
+                    onClick={() =>
+                    setSelectedTags((prev) =>
+                        prev.includes(tag)
+                        ? prev.filter((t) => t !== tag)
+                        : [...prev, tag]
                     )
-                }
+                    }
                 >
-                {transport}
+                    {tag}
                 </button>
-            ))}
-
-            <h3>Price</h3>
-
-            {["$", "$$", "$$$"].map((price) => (
-                <button
-                key={price}
-                onClick={() =>
-                    setSelectedPrices((prev) =>
-                    prev.includes(price)
-                        ? prev.filter((p) => p !== price)
-                        : [...prev, price]
-                    )
-                }
-                >
-                {price}
+                ))}
+                <button 
+                    className={showBookmarksOnly ? 'filter-btn active' : 'filter-btn'}
+                    onClick={() => setShowBookmarksOnly((prev) => !prev)}>
+                bookmarks
                 </button>
-            ))}
-        </div>
+            </div>
 
-        <div
-        ref={containerRef}
-        style={{ height: '100vh', width: '100%' }}
-        />
+            <div className="filter-group">
+                <h2>Filters</h2>
+                <p>Once picked a category, apply these filters!</p>
+                <h3>Transportation</h3>
+                <div className="filter-buttons">
+                {['walking', 'car'].map((transport) => (
+                    <button
+                    key={transport}
+                    className={selectedTransport.includes(transport) ? 'filter-btn active' : 'filter-btn'}
+                    onClick={() =>
+                        setSelectedTransport((prev) =>
+                        prev.includes(transport)
+                            ? prev.filter((t) => t !== transport)
+                            : [...prev, transport]
+                        )
+                    }
+                    >
+                    {transport}
+                    </button>
+                ))}
+                </div>
+            </div>
+
+            <div className="filter-group">
+                <h3>Price</h3>
+                <div className="filter-buttons">
+                {['$', '$$', '$$$'].map((price) => (
+                    <button
+                    key={price}
+                    className={selectedPrices.includes(price) ? 'filter-btn active' : 'filter-btn'}
+                    onClick={() =>
+                        setSelectedPrices((prev) =>
+                        prev.includes(price)
+                            ? prev.filter((p) => p !== price)
+                            : [...prev, price]
+                        )
+                    }
+                    >
+                    {price}
+                    </button>
+                ))}
+                </div>
+            </div>
+            </aside>
         </div>
+    </main>
     );
 }
