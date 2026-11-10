@@ -4,8 +4,9 @@ import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../lib/firebase";
 import { tags } from "./tags";
-import { doc, setDoc, serverTimestamp, collection, query, where, getDocs} from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, collection, query, where, getDocs } from "firebase/firestore";
 import { avatars } from "./profilepics";
+import styles from "./signup.module.css";
 
 //create a custom code for friends
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -18,11 +19,11 @@ function randomCode(length = 6) {
   return result;
 }
 
-async function generateUniqueCode(){
-  while(true){
+async function generateUniqueCode() {
+  while (true) {
     const code = randomCode();
     const snap = await getDocs(query(collection(db, "users"), where("friendCode", "==", code)));
-    if(snap.empty){
+    if (snap.empty) {
       return code;
     }
   }
@@ -60,86 +61,98 @@ export default function Signup() {
   };
 
   return (
-    <main>
-      <h1>Join Scurry! </h1>
-
-      <form onSubmit={handleSignup}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Password (6+ characters)"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          minLength={6}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="First Name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          required
-        />
-
-        <div>
-          <h2>Choose Your Squirrel</h2>
+    <main className={styles.page}>
+      <form className={styles.card} onSubmit={handleSignup}>
+        <h1 className={styles.title}>Let's Create Your Squirrel!</h1>
+        <p className={styles.subtitle}>choose your profile</p>
+        <div className={styles.avatars}>
           {avatars.map((a) => (
-            <label key={a.id}>
+            <label key={a.id}
+              className={`${styles.avatar} ${avatar === a.id ? styles.selected : ""}`}>
               <input
                 type="radio"
                 name="avatar"
+                className={styles.hidden}
                 value={a.id}
                 checked={avatar === a.id}
                 onChange={() => setAvatar(a.id)}
               />
-              <img src={a.src} alt={a.label} width={80} height={80} />
-              {a.label}
+              <img src={a.src} alt={a.label} className={styles.avatarImg} />
+              <span className={styles.avatarLabel}>{a.label}</span>
             </label>
           ))}
         </div>
 
-        {/* display interests and store them in state */}
-        <div>
-          <h2>Choose Your Interests</h2>
-          {tags.map((tag) => (
-            <label key={tag.id}>
+        <div className={styles.fields}>
+          <input
+          className={styles.input}  
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            className={styles.input}
+            type="password"
+            placeholder="Password (6+ characters)"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            minLength={6}
+            required
+          />
+
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+          </div>
+
+          {/* display interests and store them in state */}
+          <h2 className={styles.title}>Choose Your Interests</h2>
+          <p className={styles.subtitle}>select all that apply</p>
+          <div className={styles.tags}>
+            {tags.map((tag) => {
+            const isChecked = interests.includes(tag.id);
+            return (
+            <label key={tag.id}
+              className={`${styles.tag} ${isChecked ? styles.selected : ""}`}>
               <input
                 type="checkbox"
-                value={tag.id}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setInterests((prevInterests) =>
-                    e.target.checked
-                      ? [...prevInterests, value]
-                      : prevInterests.filter((id) => id !== value)
-                  );
-                }}
+                className={styles.hidden}
+                checked={isChecked}
+                onChange={() =>
+                  setInterests((prev) =>
+                    isChecked ? prev.filter((id) => id !== tag.id) : [...prev, tag.id]
+                  )
+                }
               />
+
+              <span className={styles.dot}></span>
               {tag.label}
             </label>
-          ))}
-        </div>
+            );
+            })}
+          </div>
 
-        <button type="submit">Sign Up</button>
+          <button className={styles.button} type="submit">Sign Up</button>
       </form>
 
       <p role="status">{message}</p>
-    </main>
+    </main >
   );
 }
