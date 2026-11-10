@@ -1,0 +1,156 @@
+.randomizer-page {
+    color: #6C513C;
+    padding: 0 1.5rem 2.5rem;
+}
+
+.randomizer-card {
+    max-width: 760px;
+    margin: 0 auto;
+    background: #fff;
+    border: 3px solid #6C513C;
+    border-radius: 22px;
+    padding: 1.6rem 1.4rem 1.6rem;
+    text-align: center;
+}
+
+.randomizer-card h1 {
+    margin: 0 0 0.35rem;
+}
+
+.randomizer-lead,
+.randomizer-note,
+.randomizer-empty {
+    color: #C4A484;
+}
+
+.randomizer-lead {
+    margin: 0 0 1.5rem;
+}
+
+.randomizer-card h2 {
+    margin: 0 0 0.9rem;
+}
+
+.randomizer-groups,
+.randomizer-members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.randomizer-groups {
+    margin-bottom: 0.4rem;
+}
+
+.randomizer-group,
+.randomizer-member,
+.randomizer-go,
+.randomizer-link {
+    font: inherit;
+    cursor: pointer;
+}
+
+.randomizer-group {
+    padding: 0.5rem 1rem;
+    border: 2px solid #6C513C;
+    border-radius: 999px;
+    background: #fff;
+    color: #6C513C;
+}
+
+.randomizer-group.selected,
+.randomizer-member.present {
+    background: #C8E1A0;
+}
+
+.randomizer-group:hover,
+.randomizer-member:hover,
+.randomizer-go:hover {
+    background: #321e0d;
+    color: #FFF4EB;
+    border-color: #321e0d;
+}
+
+.randomizer-group.selected:hover,
+.randomizer-member.present:hover {
+    background: #C8E1A0;
+    color: #6C513C;
+    border-color: #6C513C;
+}
+
+.randomizer-section {
+    margin-top: 1.7rem;
+}
+
+.randomizer-members {
+    margin-bottom: 1.3rem;
+}
+
+.randomizer-member {
+    width: 132px;
+    padding: 0.75rem 0.5rem 0.85rem;
+    border: 2px solid #6C513C;
+    border-radius: 16px;
+    background: #fff;
+    color: #6C513C;
+}
+
+.randomizer-member img,
+.randomizer-winner img {
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #6C513C;
+}
+
+.randomizer-member img {
+    width: 76px;
+    height: 76px;
+}
+
+.randomizer-member span {
+    display: block;
+    margin-top: 0.55rem;
+}
+
+.randomizer-go,
+.randomizer-link {
+    display: inline-block;
+    padding: 0.55rem 1.15rem;
+    border: none;
+    border-radius: 8px;
+    background: #6C513C;
+    color: #FFF4EB;
+    text-decoration: none;
+}
+
+.randomizer-go:hover,
+.randomizer-link:hover {
+    background: #321e0d;
+}
+
+.randomizer-note {
+    margin: 0.85rem 0 0;
+}
+
+.randomizer-winner {
+    margin-top: 1.5rem;
+    padding: 1.1rem 1rem 1.2rem;
+    border: 3px solid #6C513C;
+    border-radius: 18px;
+    background: #FBF6F0;
+}
+
+.randomizer-winner p {
+    margin: 0 0 0.8rem;
+    color: #C4A484;
+}
+
+.randomizer-winner img {
+    width: 120px;
+    height: 120px;
+}
+
+.randomizer-winner h3 {
+    margin: 0.75rem 0 0;
+}
