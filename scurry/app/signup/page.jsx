@@ -54,7 +54,7 @@ export default function Signup() {
         createdAt: serverTimestamp(),
       });
 
-      setMessage("Account created successfully!");
+      window.location.href = "/profile";
     } catch (error) {
       setMessage(`Signup failed: ${error.code}`);
     }
