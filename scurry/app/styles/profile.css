@@ -1,0 +1,238 @@
+.profile-page {
+    color: #6C513C;
+    padding: 0 1.5rem 2.5rem;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.9fr 0.9fr;
+    gap: 1.25rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+.profile-card {
+    background: #fff;
+    border: 3px solid #6C513C;
+    border-radius: 22px;
+    padding: 1.4rem 1.3rem 1.2rem;
+}
+
+.profile-identity {
+    text-align: center;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.6rem;
+}
+
+.profile-pic {
+    width: 92px;
+    height: 92px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.profile-intro h1 {
+    margin: 0 0 0.7rem;
+}
+
+.profile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+}
+
+.profile-tag {
+    padding: 0.35rem 0.9rem;
+    border: 2px solid #6C513C;
+    border-radius: 10px;
+    background: #FBF6F0;
+}
+
+.profile-card h2 {
+    margin: 1.4rem 0 0.7rem;
+}
+
+.profile-bio-wrap {
+    position: relative;
+    min-height: 140px;
+    padding: 0 1.8rem;
+}
+
+.profile-bio-text {
+    margin: 0;
+    color: #C4A484;
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+.profile-bio {
+    width: 100%;
+    min-height: 140px;
+    resize: vertical;
+    border: none;
+    background: transparent;
+    color: #C4A484;
+    text-align: center;
+    outline: none;
+}
+
+.profile-bio-edit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #6C513C;
+    cursor: pointer;
+}
+
+.profile-bio-edit svg {
+    width: 16px;
+    height: 16px;
+}
+
+.profile-bio-edit:hover {
+    background: #FBF6F0;
+}
+
+.profile-save,
+.profile-open,
+.profile-modal button {
+    padding: 0.4rem 0.9rem;
+    margin-left: 0.5rem;
+    background-color: #6C513C;
+    color: #FFF4EB;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 8px;
+}
+
+.profile-save:hover,
+.profile-open:hover,
+.profile-modal button:hover {
+    background-color: #321e0d;
+}
+
+.profile-open.active {
+    background-color: #C8E1A0;
+    border-color: #C8E1A0;
+    color: #6C513C;
+}
+
+.profile-save {
+    margin-top: 0.4rem;
+}
+
+.profile-note,
+.profile-empty {
+    color: #C4A484;
+}
+
+.profile-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    color: #C4A484;
+}
+
+.profile-identity .profile-list li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    margin: 0.35rem 0;
+}
+
+.profile-trash {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #6C513C;
+    cursor: pointer;
+}
+
+.profile-trash svg {
+    width: 16px;
+    height: 16px;
+}
+
+.profile-trash:hover {
+    background: #FBF6F0;
+}
+
+.profile-side {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    min-height: 460px;
+}
+
+.profile-side h2 {
+    margin-top: 0.4rem;
+}
+
+.profile-open {
+    margin-top: auto;
+    align-self: center;
+}
+
+.profile-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(50, 30, 13, 0.45);
+}
+
+.profile-modal-card {
+    width: min(520px, 100%);
+    max-height: 80vh;
+    overflow: auto;
+    padding: 1.5rem;
+    border: 3px solid #6C513C;
+    border-radius: 18px;
+    background: #fff;
+    color: #6C513C;
+}
+
+.profile-modal button {
+    margin: 0.25rem 0.25rem 0.25rem 0.5rem;
+}
+
+.profile-modal input {
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem;
+    border: 2px solid #6C513C;
+    border-radius: 8px;
+    background: #fff;
+    color: #321e0d;
+}
+
+@media (max-width: 860px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-side {
+        min-height: 280px;
+    }
+}
