@@ -6,7 +6,7 @@ import { auth, db } from "../../lib/firebase";
 import { tags } from "./tags";
 import { doc, setDoc, serverTimestamp, collection, query, where, getDocs } from "firebase/firestore";
 import { avatars } from "./profilepics";
-import styles from "./signup.module.css";
+import "../styles/signup.css";
 
 //create a custom code for friends
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -61,31 +61,31 @@ export default function Signup() {
   };
 
   return (
-    <main className={styles.page}>
-      <form className={styles.card} onSubmit={handleSignup}>
-        <h1 className={styles.title}>Let's Create Your Squirrel!</h1>
-        <p className={styles.subtitle}>choose your profile</p>
-        <div className={styles.avatars}>
+    <main className="signup-page">
+      <form className="signup-card" onSubmit={handleSignup}>
+        <h1 className="signup-title">Let's Create Your Squirrel!</h1>
+        <p className="signup-subtitle">choose your profile</p>
+        <div className="signup-avatars">
           {avatars.map((a) => (
             <label key={a.id}
-              className={`${styles.avatar} ${avatar === a.id ? styles.selected : ""}`}>
+              className={`signup-avatar ${avatar === a.id ? "signup-selected" : ""}`}>
               <input
                 type="radio"
                 name="avatar"
-                className={styles.hidden}
+                className="signup-hidden"
                 value={a.id}
                 checked={avatar === a.id}
                 onChange={() => setAvatar(a.id)}
               />
-              <img src={a.src} alt={a.label} className={styles.avatarImg} />
-              <span className={styles.avatarLabel}>{a.label}</span>
+              <img src={a.src} alt={a.label} className="signup-avatar-img" />
+              <span className="signup-avatar-label">{a.label}</span>
             </label>
           ))}
         </div>
 
-        <div className={styles.fields}>
+        <div className="signup-fields">
           <input
-          className={styles.input}  
+          className="signup-input"  
             type="email"
             placeholder="Email"
             value={email}
@@ -94,7 +94,7 @@ export default function Signup() {
           />
 
           <input
-            className={styles.input}
+            className="signup-input"
             type="password"
             placeholder="Password (6+ characters)"
             value={password}
@@ -104,7 +104,7 @@ export default function Signup() {
           />
 
           <input
-            className={styles.input}
+            className="signup-input"
             type="text"
             placeholder="First Name"
             value={firstName}
@@ -113,7 +113,7 @@ export default function Signup() {
           />
 
           <input
-            className={styles.input}
+            className="signup-input"
             type="text"
             placeholder="Last Name"
             value={lastName}
@@ -123,17 +123,17 @@ export default function Signup() {
           </div>
 
           {/* display interests and store them in state */}
-          <h2 className={styles.title}>Choose Your Interests</h2>
-          <p className={styles.subtitle}>select all that apply</p>
-          <div className={styles.tags}>
+          <h2 className="signup-title">Choose Your Interests</h2>
+          <p className="signup-subtitle">select all that apply</p>
+          <div className="signup-tags">
             {tags.map((tag) => {
             const isChecked = interests.includes(tag.id);
             return (
             <label key={tag.id}
-              className={`${styles.tag} ${isChecked ? styles.selected : ""}`}>
+              className={`signup-tag ${isChecked ? "signup-selected" : ""}`}>
               <input
                 type="checkbox"
-                className={styles.hidden}
+                className="signup-hidden"
                 checked={isChecked}
                 onChange={() =>
                   setInterests((prev) =>
@@ -142,14 +142,14 @@ export default function Signup() {
                 }
               />
 
-              <span className={styles.dot}></span>
+              <span className="signup-dot"></span>
               {tag.label}
             </label>
             );
             })}
           </div>
 
-          <button className={styles.button} type="submit">Sign Up</button>
+          <button className="signup-button" type="submit">Sign Up</button>
       </form>
 
       <p role="status">{message}</p>

@@ -1,6 +1,6 @@
 /* SHAPES ONLY: no colors, no custom fonts. Borders use currentColor. */
 
-.page {
+.signup-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -9,7 +9,7 @@
 }
 
 /* the big rounded box */
-.card {
+.signup-card {
   width: 100%;
   max-width: 470px;
   padding: 34px 30px 36px;
@@ -18,43 +18,43 @@
   text-align: center;
 }
 
-.title { font-size: 1.5rem; margin: 0 0 4px; }
-.subtitle { font-size: 0.68rem; margin: 0 0 22px; opacity: 0.6; }
+.signup-title { font-size: 1.5rem; margin: 0 0 4px; }
+.signup-subtitle { font-size: 0.68rem; margin: 0 0 22px; opacity: 0.6; }
 
 /* avatars: circles in a row */
-.avatars {
+.signup-avatars {
   display: flex;
   justify-content: center;
   gap: 28px;
   margin-bottom: 34px;
 }
-.avatar {
+.signup-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   cursor: pointer;
 }
-.avatarImg {
+.signup-avatar-img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid currentColor;
 }
-.avatar.selected .avatarImg {
+.signup-avatar.signup-selected .signup-avatar-img {
   outline: 3px solid currentColor;
   outline-offset: 3px;
 }
-.avatarLabel { font-size: 0.62rem; font-weight: bold; }
+.signup-avatar-label { font-size: 0.62rem; font-weight: bold; }
 
 /* text inputs*/
-.fields {
+.signup-fields {
   display: grid;
   gap: 10px;
   margin-bottom: 34px;
 }
-.input {
+.signup-input {
   padding: 11px 16px;
   border: 2px solid currentColor;
   border-radius: 8px;
@@ -64,14 +64,14 @@
 }
 
 /*  tag pills*/
-.tags {
+.signup-tags {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 14px 16px;
   margin-bottom: 36px;
 }
-.tag {
+.signup-tag {
   position: relative;
   display: flex;
   align-items: center;
@@ -85,10 +85,10 @@
   font-size: 0.8rem;
   font-weight: bold;
 }
-.tag.selected { border-color: currentColor; }
+.signup-tag.selected { border-color: currentColor; }
 
 /* the little radio-style circle on the left of each pill */
-.dot {
+.signup-dot {
   position: absolute;
   left: 12px;
   width: 14px;
@@ -96,10 +96,10 @@
   border-radius: 50%;
   border: 2px solid currentColor;
 }
-.tag.selected .dot { background: currentColor; }
+.signup-tag.selected .signup-dot { background: currentColor; }
 
 /* continue button*/
-.button {
+.signup-button {
   padding: 12px 38px;
   border: 3px solid currentColor;
   border-radius: 8px;
@@ -113,7 +113,7 @@
 }
 
 /* visually hide the real inputs but keep them accessible */
-.hidden {
+.signup-hidden {
   position: absolute;
   opacity: 0;
   pointer-events: none;
