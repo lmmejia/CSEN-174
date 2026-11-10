@@ -9,6 +9,13 @@ import { BookmarkManager } from './bookmarks';
 import '../styles/map.css';
 
 const SCU_CENTER = [37.3496, -121.9390];
+const PIN_IMAGES = {
+    food: '/food-icon.png',
+    coffee: '/coffee-icon.png',
+    shopping: '/shopping-icon.png',
+    activity: '/activity-icon.png',
+    default: '/bookmark-icon.png',
+}
 const bookmarkManager = new BookmarkManager();
 
 function escapeHtml(text) {
@@ -113,13 +120,16 @@ export default function MapPage() {
         (async () => {
         const L = (await import('leaflet')).default;
 
-        const markerIcon = L.icon({
-        iconUrl: '/marker-icon.png',
-        shadowUrl: '/marker-shadow.png',
-        iconSize: [32, 32],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41],
+        const icons = {};
+        Object.entries(PIN_IMAGES).forEach(([key, url]) => {
+            icons[key] = L.icon({
+                iconUrl: url,
+                shadowUrl: '/marker-shadow.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32], 
+                shadowSize: [41, 41],
+            });
         });
 
         if (cancelled || !containerRef.current) return;
@@ -133,7 +143,10 @@ export default function MapPage() {
 
         
         filteredPlaces.forEach((location) => {
-            const marker = L.marker([location.lat, location.lng], { icon: markerIcon })
+            const tag = selectedTags.find((t) => location.categories.includes(t));
+            const icon = icons[tag] || icons.default;
+            
+            const marker = L.marker([location.lat, location.lng], { icon })
             .addTo(map)
             .bindPopup(buildPopupHtml(location, false));
 
