@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import "./styles/navbar.css";
 
 export default function Navbar() {
 const pathname = usePathname();
@@ -10,7 +11,7 @@ const pathname = usePathname();
 if (pathname === "/") return null;
 
 return (
-    <nav>
+    <nav className ="navbar">
     <ul>
         <li><Link href="/profile">Profile</Link></li>
         <li><Link href="/map">Map</Link></li>

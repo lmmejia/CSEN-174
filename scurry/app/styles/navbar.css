@@ -1,0 +1,22 @@
+.navbar {
+    max-width: 1000px;
+    height: 50px;
+    margin: 2rem auto;
+    border-radius: 999px;
+    background-color: #C8E1A0;
+}
+
+.navbar ul {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #6C513C;
+}
