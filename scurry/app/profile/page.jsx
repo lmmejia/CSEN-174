@@ -129,6 +129,9 @@ export default function Profile() {
             <img className="profile-pic" src={avatar.src} alt={avatar.label} />
             <div className="profile-intro">
               <h1>{displayName}</h1>
+              {profile?.friendCode && (
+                <p className="profile-code">Friend Code: {profile.friendCode}</p>
+              )}
               {interestLabels.length > 0 && (
                 <div className="profile-tags">
                   {interestLabels.map((label) => (

@@ -43,6 +43,17 @@
     margin: 0 0 0.7rem;
 }
 
+.profile-code {
+    display: inline-block;
+    margin: -0.2rem 0 0.7rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    background: #FBF6F0;
+    color: #6C513C;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+}
+
 .profile-tags {
     display: flex;
     flex-wrap: wrap;
