@@ -12,6 +12,10 @@ vi.mock("firebase/firestore", () => ({
   doc: vi.fn(),
   setDoc: vi.fn().mockResolvedValue(undefined),
   serverTimestamp: vi.fn(),
+  collection: vi.fn(),
+  query: vi.fn(),
+  where: vi.fn(),
+  getDocs: vi.fn().mockResolvedValue({ empty: true }),
 }));
 vi.mock("../../lib/firebase", () => ({
   auth: { mock: true },
@@ -102,7 +106,22 @@ describe("Signup", () => {
   //test to check if account is made (should be successful)
   it("creates the account when inputs are valid and the account does not exist", async () => {
     createUserWithEmailAndPassword.mockResolvedValue({ user: { uid: "abc123" } });
-    await fillAndClick("new@example.com", "password123");
-    await waitFor(() => expect(message()).toBe("Account created successfully!"));
+    const hrefs = [];
+    const location = window.location;
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        set href(url) {
+          hrefs.push(url);
+        },
+      },
+    });
+    try {
+      await fillAndClick("new@example.com", "password123");
+      await waitFor(() => expect(hrefs).toContain("/profile"));
+      expect(message()).toBe("");
+    } finally {
+      Object.defineProperty(window, "location", { configurable: true, value: location });
+    }
   });
 });
