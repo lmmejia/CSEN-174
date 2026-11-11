@@ -256,8 +256,8 @@ return (
                 )}
                 {preferenceTags.map((tag) => (
                 <button
-                    key={tag}
-                    className={selectedTags.includes(tag) ? 'active' : undefined}
+                    key={tag.id}
+                    className={selectedTags.includes(tag.id) ? 'active' : undefined}
                     onClick={() =>
                     setSelectedTags((prev) =>
                         prev.includes(tag.id)
