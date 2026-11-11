@@ -50,6 +50,8 @@ export default function MapPage() {
     const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
     const [bookmarks, setBookmarks] = useState([]);
     const [userId, setUserId] = useState(null);
+    const [interests, setInterests] = useState([]);
+    const [preferenceState, setPreferenceState] = useState("loading");
 
     const filteredPlaces = useMemo(() => {
         return locations.filter((location) => {
@@ -79,9 +81,20 @@ export default function MapPage() {
         });    
     }, [selectedTags, selectedTransport, selectedPrices, showBookmarksOnly, bookmarks]);
 
+    const preferenceTags = useMemo(() => {
+        return interests.map((id) => {
+            const known = tags.find((tag) => tag.id === id);
+            return known || { id, label: id };
+        });
+    }, [interests]);
+
     useEffect(() => {
         bookmarksRef.current = bookmarks;
     }, [bookmarks]);
+
+    useEffect(() => {
+        setSelectedTags((current) => current.filter((id) => interests.includes(id)));
+    }, [interests]);
 
     useEffect(() => {
         userIdRef.current = userId;
@@ -99,12 +112,17 @@ export default function MapPage() {
             if (!user) {
                 setUserId(null);
                 setBookmarks([]);
+                setInterests([]);
+                setPreferenceState("signed-out");
                 return;
             }
 
             setUserId(user.uid);
             unsubSnapshot = onSnapshot(doc(db, 'users', user.uid), (snap) => {
-                setBookmarks(snap.data()?.bookmarks || []);
+                const data = snap.data() || {};
+                setBookmarks(data.bookmarks || []);
+                setInterests(data.interests || []);
+                setPreferenceState("ready");
             });
         });
 
@@ -231,7 +249,12 @@ return (
             <aside className="map-panel">
             <div className="filter-buttons">
                 <h2>Categories</h2>
-                {tags.map((tag) => (
+                {preferenceState === "loading" && <p>loading your preferences...</p>}
+                {preferenceState === "signed-out" && <p>Log in to see your categories.</p>}
+                {preferenceState === "ready" && preferenceTags.length === 0 && (
+                    <p>Add preferences on your profile to see categories.</p>
+                )}
+                {preferenceTags.map((tag) => (
                 <button
                     key={tag.id}
                     className={selectedTags.includes(tag.id) ? 'filter-btn active' : 'filter-btn'}
