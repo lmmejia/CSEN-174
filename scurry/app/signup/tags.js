@@ -1,8 +1,10 @@
 export const tags = [
+  { id: "matcha", label: "Matcha", category: "interests" },
   { id: "food", label: "Food", category: "interests" },
-  { id: "study", label: "Study", category: "interests" },
-  { id: "sidequests", label: "Sidequests", category: "interests" },
+  { id: "coffee", label: "Coffee", category: "interests" },
+  { id: "dessert", label: "Dessert", category: "interests" },
+  { id: "boba", label: "Boba", category: "interests" },
+  { id: "activity", label: "Activity", category: "interests" },
+  { id: "transport", label: "Transport", category: "interests" },
   { id: "shopping", label: "Shopping", category: "interests" },
-  { id: "outdoors", label: "Outdoors", category: "interests" },
-  { id: "gaming", label: "Gaming", category: "interests" },
 ];
