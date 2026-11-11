@@ -13,7 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { avatars } from "../signup/profilepics";
-import { tags } from "../signup/tags";
+import { tags } from "../data/tags";
 import Friends from "./friends/friends";
 import Groups from "./groups/groups";
 import "../styles/signup.css";

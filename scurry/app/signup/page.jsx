@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../lib/firebase";
-import { tags } from "./tags";
+import { tags } from "../data/tags";
 import { doc, setDoc, serverTimestamp, collection, query, where, getDocs } from "firebase/firestore";
 import { avatars } from "./profilepics";
 import "../styles/signup.css";
