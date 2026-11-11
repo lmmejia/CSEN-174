@@ -98,20 +98,6 @@
 }
 .signup-tag.selected .signup-dot { background: currentColor; }
 
-/* continue button*/
-.signup-button {
-  padding: 12px 38px;
-  border: 3px solid currentColor;
-  border-radius: 8px;
-  background: transparent;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: bold;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
 /* visually hide the real inputs but keep them accessible */
 .signup-hidden {
   position: absolute;

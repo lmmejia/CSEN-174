@@ -29,24 +29,3 @@
 .map-header p {
     margin: 0.5rem 0 0;
 }
-
-/*buttons*/
-.filter-btn {
-    padding: 0.4rem 0.9rem;
-    margin-left: 0.5rem;
-    background-color: #6C513C;
-    color: #FFF4EB;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border-radius: 8px;
-}
-
-.filter-btn:hover {
-    background-color: #321e0d;
-}
-
-.filter-btn.active {
-    background-color: #C8E1A0;
-    border-color: #C8E1A0;
-    color: #6C513C;
-}

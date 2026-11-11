@@ -3,7 +3,7 @@
     height: 50px;
     margin: 2rem auto;
     border-radius: 999px;
-    background-color: #C8E1A0;
+    background-color: var(--sage);
 }
 
 .navbar ul {
@@ -18,5 +18,5 @@
 
 .navbar a {
     text-decoration: none;
-    color: #6C513C;
+    color: var(--brown);
 }

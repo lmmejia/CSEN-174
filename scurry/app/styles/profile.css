@@ -1,5 +1,5 @@
 .profile-page {
-    color: #6C513C;
+    color: var(--brown);
     padding: 0 1.5rem 2.5rem;
 }
 
@@ -13,8 +13,8 @@
 }
 
 .profile-card {
-    background: #fff;
-    border: 3px solid #6C513C;
+    background: var(--white);
+    border: 3px solid var(--brown);
     border-radius: 22px;
     padding: 1.4rem 1.3rem 1.2rem;
 }
@@ -52,9 +52,9 @@
 
 .profile-tag {
     padding: 0.35rem 0.9rem;
-    border: 2px solid #6C513C;
+    border: 2px solid var(--brown);
     border-radius: 10px;
-    background: #FBF6F0;
+    background: var(--paper);
 }
 
 .profile-card h2 {
@@ -69,7 +69,7 @@
 
 .profile-bio-text {
     margin: 0;
-    color: #C4A484;
+    color: var(--tan);
     text-align: center;
     white-space: pre-wrap;
 }
@@ -80,7 +80,7 @@
     resize: vertical;
     border: none;
     background: transparent;
-    color: #C4A484;
+    color: var(--tan);
     text-align: center;
     outline: none;
 }
@@ -91,11 +91,12 @@
     right: 0;
     width: 28px;
     height: 28px;
+    margin: 0;
     padding: 0;
     border: none;
     border-radius: 6px;
     background: transparent;
-    color: #6C513C;
+    color: var(--brown);
     cursor: pointer;
 }
 
@@ -105,31 +106,7 @@
 }
 
 .profile-bio-edit:hover {
-    background: #FBF6F0;
-}
-
-.profile-save,
-.profile-open,
-.profile-modal button {
-    padding: 0.4rem 0.9rem;
-    margin-left: 0.5rem;
-    background-color: #6C513C;
-    color: #FFF4EB;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-    border-radius: 8px;
-}
-
-.profile-save:hover,
-.profile-open:hover,
-.profile-modal button:hover {
-    background-color: #321e0d;
-}
-
-.profile-open.active {
-    background-color: #C8E1A0;
-    border-color: #C8E1A0;
-    color: #6C513C;
+    background: var(--paper);
 }
 
 .profile-save {
@@ -138,14 +115,14 @@
 
 .profile-note,
 .profile-empty {
-    color: #C4A484;
+    color: var(--tan);
 }
 
 .profile-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    color: #C4A484;
+    color: var(--tan);
 }
 
 .profile-identity .profile-list li {
@@ -159,11 +136,12 @@
 .profile-trash {
     width: 28px;
     height: 28px;
+    margin: 0;
     padding: 0;
     border: none;
     border-radius: 6px;
     background: transparent;
-    color: #6C513C;
+    color: var(--brown);
     cursor: pointer;
 }
 
@@ -173,7 +151,7 @@
 }
 
 .profile-trash:hover {
-    background: #FBF6F0;
+    background: var(--paper);
 }
 
 .profile-side {
@@ -200,7 +178,7 @@
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background: rgba(50, 30, 13, 0.45);
+    background: var(--overlay);
 }
 
 .profile-modal-card {
@@ -208,10 +186,10 @@
     max-height: 80vh;
     overflow: auto;
     padding: 1.5rem;
-    border: 3px solid #6C513C;
+    border: 3px solid var(--brown);
     border-radius: 18px;
-    background: #fff;
-    color: #6C513C;
+    background: var(--white);
+    color: var(--brown);
 }
 
 .profile-modal button {
@@ -221,10 +199,10 @@
 .profile-modal input {
     padding: 0.5rem 0.75rem;
     margin: 0.25rem;
-    border: 2px solid #6C513C;
+    border: 2px solid var(--brown);
     border-radius: 8px;
-    background: #fff;
-    color: #321e0d;
+    background: var(--white);
+    color: var(--brown-dark);
 }
 
 @media (max-width: 860px) {
