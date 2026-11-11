@@ -34,7 +34,7 @@ function buildPopupHtml(location, bookmarked) {
         <div>
             <strong>${escapeHtml(location.name)}</strong>
             <br />
-            <button type="button" class="bookmark-btn">${label}</button>
+            <button type="button">${label}</button>
             <p class="bookmark-msg"></p>
         </div>
     `;
@@ -159,7 +159,7 @@ export default function MapPage() {
                 marker.setPopupContent(buildPopupHtml(location, bookmarked));
 
                 const popupEl = marker.getPopup()?.getElement();
-                const btn = popupEl?.querySelector('.bookmark-btn');
+                const btn = popupEl?.querySelector('button');
                 const msgEl = popupEl?.querySelector('.bookmark-msg');
                 if (!btn) return;
 
@@ -233,8 +233,8 @@ return (
                 <h2>Categories</h2>
                 {tags.map((tag) => (
                 <button
-                    key={tag.id}
-                    className={selectedTags.includes(tag.id) ? 'filter-btn active' : 'filter-btn'}
+                    key={tag}
+                    className={selectedTags.includes(tag) ? 'active' : undefined}
                     onClick={() =>
                     setSelectedTags((prev) =>
                         prev.includes(tag.id)
@@ -247,7 +247,7 @@ return (
                 </button>
                 ))}
                 <button 
-                    className={showBookmarksOnly ? 'filter-btn active' : 'filter-btn'}
+                    className={showBookmarksOnly ? 'active' : undefined}
                     onClick={() => setShowBookmarksOnly((prev) => !prev)}>
                 bookmarks
                 </button>
@@ -261,7 +261,7 @@ return (
                 {['walking', 'car'].map((transport) => (
                     <button
                     key={transport}
-                    className={selectedTransport.includes(transport) ? 'filter-btn active' : 'filter-btn'}
+                    className={selectedTransport.includes(transport) ? 'active' : undefined}
                     onClick={() =>
                         setSelectedTransport((prev) =>
                         prev.includes(transport)
@@ -282,7 +282,7 @@ return (
                 {['$', '$$', '$$$'].map((price) => (
                     <button
                     key={price}
-                    className={selectedPrices.includes(price) ? 'filter-btn active' : 'filter-btn'}
+                    className={selectedPrices.includes(price) ? 'active' : undefined}
                     onClick={() =>
                         setSelectedPrices((prev) =>
                         prev.includes(price)

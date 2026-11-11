@@ -24,7 +24,7 @@ export default function RandomizerPage() {
 
   useEffect(() => {
     const previous = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = "#FBF6F0";
+    document.body.style.backgroundColor = "var(--paper)";
     return () => {
       document.body.style.backgroundColor = previous;
     };
@@ -147,14 +147,14 @@ export default function RandomizerPage() {
         {status === "signed-out" && (
           <>
             <p className="randomizer-lead">Log in and join a group to pick someone at random.</p>
-            <Link className="randomizer-link" href="/login">log in</Link>
+            <Link className="btn" href="/login">log in</Link>
           </>
         )}
 
         {status === "ready" && groups.length === 0 && (
           <>
             <p className="randomizer-lead">Join a friend group before you can randomize.</p>
-            <Link className="randomizer-link" href="/profile">go to groups</Link>
+            <Link className="btn" href="/profile">go to groups</Link>
           </>
         )}
 
@@ -168,7 +168,7 @@ export default function RandomizerPage() {
                 <button
                   key={group.id}
                   type="button"
-                  className={group.id === selectedGroupId ? "randomizer-group selected" : "randomizer-group"}
+                  className={group.id === selectedGroupId ? "active" : undefined}
                   onClick={() => selectGroup(group.id)}
                 >
                   {group.name}
@@ -202,7 +202,7 @@ export default function RandomizerPage() {
                   </div>
                 )}
 
-                <button className="randomizer-go" type="button" onClick={handleRandomize}>
+                <button type="button" onClick={handleRandomize}>
                   randomize
                 </button>
                 {error && <p className="randomizer-note">{error}</p>}

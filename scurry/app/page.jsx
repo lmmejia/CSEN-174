@@ -9,8 +9,8 @@ export default function Landing() {
       <p>Do not waste time, start scurrying around campus</p>
 
       <div className="button-container">
-        <Link href="/login" className="login-button">LOG IN </Link>
-        <Link href="/signup" className="signup-button">SIGN UP</Link>
+        <Link href="/login" className="btn">LOG IN </Link>
+        <Link href="/signup" className="btn">SIGN UP</Link>
       </div>
     </main>
   );

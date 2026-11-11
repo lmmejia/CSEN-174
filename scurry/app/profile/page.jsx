@@ -30,7 +30,7 @@ export default function Profile() {
 
   useEffect(() => {
     const previous = document.body.style.backgroundColor;
-    document.body.style.backgroundColor = "#FBF6F0";
+    document.body.style.backgroundColor = "var(--paper)";
     return () => {
       document.body.style.backgroundColor = previous;
     };

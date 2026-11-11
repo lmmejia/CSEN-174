@@ -1,26 +1,59 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 
 :root {
   --background: #FFF4EB;
-  --foreground: #171717;
+  --foreground: #6C513C;
+  --brown: #6C513C;
+  --brown-dark: #321e0d;
+  --sage: #C8E1A0;
+  --tan: #C4A484;
+  --paper: #FBF6F0;
+  --white: #ffffff;
+  --overlay: rgba(50, 30, 13, 0.45);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-brown: var(--brown);
+  --color-brown-dark: var(--brown-dark);
+  --color-sage: var(--sage);
+  --color-tan: var(--tan);
+  --color-paper: var(--paper);
+  --font-sans: "Nunito", sans-serif;
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Nunito", sans-serif;
+}
+
+button,
+.btn {
+  padding: 0.4rem 0.9rem;
+  margin: 0.25rem;
+  background-color: var(--brown);
+  color: var(--background);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover,
+.btn:hover {
+  background-color: var(--brown-dark);
+  color: var(--background);
+}
+
+button.active,
+.btn.active {
+  background-color: var(--sage);
+  color: var(--brown);
 }

@@ -149,7 +149,7 @@ export default function Signup() {
             })}
           </div>
 
-          <button className="signup-button" type="submit">Sign Up</button>
+          <button type="submit">Sign Up</button>
       </form>
 
       <p role="status">{message}</p>
