@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
 import 'leaflet/dist/leaflet.css';
 import locations from '../data/geocoded.json';
+import { tags } from '../data/tags';
 import { auth, db } from '../../lib/firebase';
 import { doc, onSnapshot, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 import { BookmarkManager } from './bookmarks';
@@ -230,19 +231,19 @@ return (
             <aside className="map-panel">
             <div className="filter-buttons">
                 <h2>Categories</h2>
-                {['food', 'coffee', 'shopping', 'activity'].map((tag) => (
+                {tags.map((tag) => (
                 <button
-                    key={tag}
-                    className={selectedTags.includes(tag) ? 'filter-btn active' : 'filter-btn'}
+                    key={tag.id}
+                    className={selectedTags.includes(tag.id) ? 'filter-btn active' : 'filter-btn'}
                     onClick={() =>
                     setSelectedTags((prev) =>
-                        prev.includes(tag)
-                        ? prev.filter((t) => t !== tag)
-                        : [...prev, tag]
+                        prev.includes(tag.id)
+                        ? prev.filter((t) => t !== tag.id)
+                        : [...prev, tag.id]
                     )
                     }
                 >
-                    {tag}
+                    {tag.label}
                 </button>
                 ))}
                 <button 

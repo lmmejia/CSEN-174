@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, db } from "../../lib/firebase";
 import {
   arrayRemove,
@@ -13,21 +13,20 @@ import {
   where,
 } from "firebase/firestore";
 import { avatars } from "../signup/profilepics";
-import { tags } from "../signup/tags";
+import { tags } from "../data/tags";
 import Friends from "./friends/friends";
 import Groups from "./groups/groups";
+import "../styles/signup.css";
 import "../styles/profile.css";
 
 export default function Profile() {
   const [openPopup, setOpenPopup] = useState(null);
   const [userId, setUserId] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [bio, setBio] = useState("");
-  const [editingBio, setEditingBio] = useState(false);
-  const [bioMessage, setBioMessage] = useState("");
+  const [draft, setDraft] = useState(null);
+  const [editMessage, setEditMessage] = useState("");
   const [friends, setFriends] = useState([]);
   const [groups, setGroups] = useState([]);
-  const bioSynced = useRef(false);
 
   useEffect(() => {
     const previous = document.body.style.backgroundColor;
@@ -44,12 +43,10 @@ export default function Profile() {
     const unsubAuth = auth.onAuthStateChanged((user) => {
       if (unsubUser) unsubUser();
       if (unsubGroups) unsubGroups();
-      bioSynced.current = false;
 
       if (!user) {
         setUserId(null);
         setProfile(null);
-        setBio("");
         setFriends([]);
         setGroups([]);
         return;
@@ -60,10 +57,6 @@ export default function Profile() {
       unsubUser = onSnapshot(doc(db, "users", user.uid), async (snap) => {
         const data = snap.data() || {};
         setProfile(data);
-        if (!bioSynced.current) {
-          setBio(data.bio || "");
-          bioSynced.current = true;
-        }
 
         const ids = data.friends || [];
         const docs = await Promise.all(ids.map((id) => getDoc(doc(db, "users", id))));
@@ -100,17 +93,57 @@ export default function Profile() {
   );
   const bookmarks = profile?.bookmarks || [];
 
-  async function handleSaveBio() {
-    setBioMessage("");
+  function startEdit() {
     if (!userId) {
-      setBioMessage("Log in first");
+      setEditMessage("Log in first");
+      return;
+    }
+    setDraft({
+      firstName: profile?.firstName || "",
+      lastName: profile?.lastName || "",
+      bio: profile?.bio || "",
+      avatar: profile?.avatar || avatars[0].id,
+      interests: [...(profile?.interests || [])],
+    });
+    setEditMessage("");
+    setOpenPopup("edit");
+  }
+
+  function toggleInterest(id) {
+    setDraft((current) => {
+      const selected = current.interests.includes(id);
+      return {
+        ...current,
+        interests: selected
+          ? current.interests.filter((item) => item !== id)
+          : [...current.interests, id],
+      };
+    });
+  }
+
+  async function handleSaveProfile() {
+    setEditMessage("");
+    if (!userId || !draft) {
+      setEditMessage("Log in first");
+      return;
+    }
+    const firstNameValue = draft.firstName.trim();
+    if (!firstNameValue) {
+      setEditMessage("First name is required");
       return;
     }
     try {
-      await updateDoc(doc(db, "users", userId), { bio });
-      setEditingBio(false);
+      await updateDoc(doc(db, "users", userId), {
+        firstName: firstNameValue,
+        lastName: draft.lastName.trim(),
+        bio: draft.bio,
+        avatar: draft.avatar,
+        interests: draft.interests,
+      });
+      setOpenPopup(null);
+      setDraft(null);
     } catch (error) {
-      setBioMessage(error.message);
+      setEditMessage(error.message);
     }
   }
 
@@ -129,6 +162,9 @@ export default function Profile() {
             <img className="profile-pic" src={avatar.src} alt={avatar.label} />
             <div className="profile-intro">
               <h1>{displayName}</h1>
+              {profile?.friendCode && (
+                <p className="profile-code">Friend Code: {profile.friendCode}</p>
+              )}
               {interestLabels.length > 0 && (
                 <div className="profile-tags">
                   {interestLabels.map((label) => (
@@ -136,64 +172,17 @@ export default function Profile() {
                   ))}
                 </div>
               )}
+              <button type="button" onClick={startEdit}>edit profile</button>
+              {editMessage && openPopup !== "edit" && <p>{editMessage}</p>}
             </div>
           </div>
 
           <h2>{firstName ? `${firstName.toLowerCase()} bio` : "bio"}</h2>
           <div className="profile-bio-wrap">
-            {editingBio ? (
-              <textarea
-                className="profile-bio"
-                value={bio}
-                onChange={(event) => {
-                  setBio(event.target.value);
-                  setBioMessage("");
-                }}
-                placeholder="write a little about yourself"
-              />
-            ) : (
-              <p className={bio ? "profile-bio-text" : "profile-bio-text profile-empty"}>
-                {bio || "write a little about yourself"}
-              </p>
-            )}
-            <button
-              className="profile-bio-edit"
-              type="button"
-              aria-label={editingBio ? "Cancel editing bio" : "Edit bio"}
-              onClick={() => {
-                if (editingBio) {
-                  setBio(profile?.bio || "");
-                  setBioMessage("");
-                  setEditingBio(false);
-                  return;
-                }
-                setBioMessage("");
-                setEditingBio(true);
-              }}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M4 16.5V20h3.5L18.8 8.7l-3.5-3.5L4 16.5z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M13.8 6.7l3.5 3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </button>
+            <p className={profile?.bio ? "profile-bio-text" : "profile-bio-text profile-empty"}>
+              {profile?.bio || "write a little about yourself"}
+            </p>
           </div>
-          {editingBio && (
-            <button className="profile-save" type="button" onClick={handleSaveBio}>
-              save bio
-            </button>
-          )}
-          {bioMessage && <p className="profile-note">{bioMessage}</p>}
 
           <h2>bookmarks</h2>
           {bookmarks.length === 0 ? (
@@ -285,7 +274,11 @@ export default function Profile() {
           className="profile-modal"
           role="dialog"
           aria-modal="true"
-          onClick={() => setOpenPopup(null)}
+          onClick={() => {
+            setOpenPopup(null);
+            setDraft(null);
+            setEditMessage("");
+          }}
         >
           <div className="profile-modal-card" onClick={(event) => event.stopPropagation()}>
             {openPopup === "friends" && (
@@ -293,6 +286,112 @@ export default function Profile() {
             )}
             {openPopup === "groups" && (
               <Groups onClose={() => setOpenPopup(null)} />
+            )}
+            {openPopup === "edit" && draft && (
+              <form
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleSaveProfile();
+                }}
+              >
+                <h2>edit profile</h2>
+                <p>profile picture</p>
+                <div className="signup-avatars">
+                  {avatars.map((item) => (
+                    <label
+                      key={item.id}
+                      className={`signup-avatar ${draft.avatar === item.id ? "signup-selected" : ""}`}
+                    >
+                      <input
+                        type="radio"
+                        name="avatar"
+                        className="signup-hidden"
+                        checked={draft.avatar === item.id}
+                        onChange={() => setDraft((current) => ({ ...current, avatar: item.id }))}
+                      />
+                      <img src={item.src} alt={item.label} className="signup-avatar-img" />
+                      <span className="signup-avatar-label">{item.label}</span>
+                    </label>
+                  ))}
+                </div>
+                <p>
+                  <label>
+                    First name{" "}
+                    <input
+                      type="text"
+                      value={draft.firstName}
+                      onChange={(event) => setDraft((current) => ({ ...current, firstName: event.target.value }))}
+                      required
+                    />
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Last name{" "}
+                    <input
+                      type="text"
+                      value={draft.lastName}
+                      onChange={(event) => setDraft((current) => ({ ...current, lastName: event.target.value }))}
+                    />
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    Bio{" "}
+                    <textarea
+                      value={draft.bio}
+                      onChange={(event) => setDraft((current) => ({ ...current, bio: event.target.value }))}
+                    />
+                  </label>
+                </p>
+                <p>preferences</p>
+                <div className="signup-tags">
+                  {tags.map((tag) => {
+                    const selected = draft.interests.includes(tag.id);
+                    return (
+                      <label
+                        key={tag.id}
+                        className={`signup-tag ${selected ? "signup-selected" : ""}`}
+                      >
+                        <input
+                          type="checkbox"
+                          className="signup-hidden"
+                          checked={selected}
+                          onChange={() => toggleInterest(tag.id)}
+                        />
+                        <span className="signup-dot"></span>
+                        {tag.label}
+                      </label>
+                    );
+                  })}
+                  {draft.interests
+                    .filter((id) => !tags.some((tag) => tag.id === id))
+                    .map((id) => (
+                      <label key={id} className="signup-tag signup-selected">
+                        <input
+                          type="checkbox"
+                          className="signup-hidden"
+                          checked
+                          onChange={() => toggleInterest(id)}
+                        />
+                        <span className="signup-dot"></span>
+                        {id}
+                      </label>
+                    ))}
+                </div>
+                {editMessage && <p>{editMessage}</p>}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOpenPopup(null);
+                    setDraft(null);
+                    setEditMessage("");
+                  }}
+                >
+                  cancel
+                </button>
+                <button type="submit">save</button>
+              </form>
             )}
           </div>
         </div>
