@@ -75,7 +75,7 @@
 .profile-bio-wrap {
     position: relative;
     min-height: 140px;
-    padding: 0 1.8rem;
+    padding: 0 1rem;
 }
 
 .profile-bio-text {
@@ -236,6 +236,17 @@
     border-radius: 8px;
     background: #fff;
     color: #321e0d;
+}
+
+.profile-modal .signup-hidden {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.profile-modal .signup-avatars,
+.profile-modal .signup-tags {
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 860px) {
