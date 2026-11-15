@@ -1,16 +1,17 @@
 .navbar {
-    max-width: 1000px;
-    height: 50px;
-    margin: 2rem auto;
+    max-width: 980px;
+    margin: 1.5rem auto 0.4rem;
+    padding: 0.35rem 0.8rem 0.35rem 0.4rem;
     border-radius: 999px;
     background-color: var(--sage);
 }
 
 .navbar ul {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    height: 100%;
+    gap: 0.25rem;
+    height: 64px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -18,10 +19,52 @@
 
 .navbar a,
 .navbar button {
+    margin: 0;
+    padding: 0.45rem 1rem;
     border: none;
+    border-radius: 999px;
     background: transparent;
-    padding: 0;
-    font: inherit;
-    text-decoration: none;
     color: var(--brown);
+    font: inherit;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar a.active {
+    background: #f6f1e8;
+    color: var(--brown);
+}
+
+.navbar a:hover,
+.navbar button:hover {
+    background: transparent;
+    color: var(--brown-dark);
+}
+
+.navbar a.active:hover {
+    background: #f6f1e8;
+    color: var(--brown);
+}
+
+.navbar-avatar-link {
+    display: flex;
+    margin-right: 0.35rem;
+    padding: 0;
+    line-height: 0;
+    background: transparent;
+}
+
+.navbar-avatar-link:hover {
+    background: transparent;
+}
+
+.navbar-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: 4px solid #e3c7aa;
+    object-fit: cover;
+    background: #f6e4d4;
 }
