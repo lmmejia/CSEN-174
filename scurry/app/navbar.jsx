@@ -10,7 +10,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   // hide the nav on the landing and login pages
-  if (pathname === "/" || pathname === "/login") return null;
+  if (pathname === "/" || pathname === "/login" || pathname === "/signup") return null;
 
   async function handleLogout() {
     await signOut(auth);

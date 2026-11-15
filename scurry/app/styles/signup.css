@@ -1,112 +1,198 @@
-/* SHAPES ONLY: no colors, no custom fonts. Borders use currentColor. */
+/* Layout and shapes only. Colors and type come from globals.css (Nunito + the theme tokens). */
 
 .signup-page {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 32px 20px;
+  background: var(--tan);
+  color: var(--brown);
 }
 
-/* the big rounded box */
 .signup-card {
   width: 100%;
-  max-width: 470px;
-  padding: 34px 30px 36px;
-  border: 5px solid currentColor;
-  border-radius: 14px;
+  max-width: 640px;
+  padding: 42px 40px 36px;
+  background: var(--paper);
+  border: 5px solid var(--brown);
+  border-radius: 18px;
   text-align: center;
+  color: var(--brown);
 }
 
-.signup-title { font-size: 1.5rem; margin: 0 0 4px; }
-.signup-subtitle { font-size: 0.68rem; margin: 0 0 22px; opacity: 0.6; }
+.signup-title {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--brown);
+}
 
-/* avatars: circles in a row */
+.signup-heading {
+  margin: 8px 0 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+  font-style: italic;
+  color: var(--brown);
+}
+
+.signup-subtitle {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--tan);
+}
+
 .signup-avatars {
   display: flex;
   justify-content: center;
-  gap: 28px;
-  margin-bottom: 34px;
+  align-items: flex-start;
+  gap: 36px;
+  margin: 28px 0 36px;
 }
+
 .signup-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
+  color: var(--brown);
 }
+
 .signup-avatar-img {
-  width: 80px;
-  height: 80px;
+  width: 132px;
+  height: 132px;
   border-radius: 50%;
   object-fit: cover;
-  border: 4px solid currentColor;
+  background: var(--background);
+  border: 5px solid var(--brown);
+  color: transparent;
+  font-size: 0;
 }
+
 .signup-avatar.signup-selected .signup-avatar-img {
-  outline: 3px solid currentColor;
-  outline-offset: 3px;
-}
-.signup-avatar-label { font-size: 0.62rem; font-weight: bold; }
-
-/* text inputs*/
-.signup-fields {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 34px;
-}
-.signup-input {
-  padding: 11px 16px;
-  border: 2px solid currentColor;
-  border-radius: 8px;
-  font: inherit;
-  font-size: 0.85rem;
-  background: transparent;
+  border-color: var(--sage);
 }
 
-/*  tag pills*/
+.signup-avatar-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--brown);
+}
+
 .signup-tags {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 14px 16px;
-  margin-bottom: 36px;
+  margin: 26px 0 32px;
 }
+
 .signup-tag {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 84px;
-  padding: 9px 18px 9px 38px;
-  /* faint outline so you can see the pill shape without a fill */
-  border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
-  border-radius: 8px;
+  min-width: 92px;
+  padding: 10px 18px 10px 40px;
+  background: var(--paper);
+  border: 2px solid var(--brown);
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: bold;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--brown);
 }
-.signup-tag.signup-selected { border-color: currentColor; }
 
-/* the little radio-style circle on the left of each pill */
+.signup-tag.signup-selected {
+  background: var(--brown);
+  color: var(--paper);
+  border-color: var(--brown);
+}
+
 .signup-dot {
   position: absolute;
-  left: 12px;
+  left: 14px;
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 2px solid currentColor;
+  border: 2px solid var(--brown);
+  background: transparent;
   pointer-events: none;
 }
-.signup-tag.signup-selected .signup-dot { background: currentColor; }
 
-/* visually hide the real inputs but keep them accessible */
+.signup-tag.signup-selected .signup-dot {
+  border-color: var(--paper);
+  background: var(--paper);
+}
+
+.signup-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 22px 0 28px;
+  text-align: left;
+}
+
+.signup-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  background: var(--background);
+  color: var(--brown);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.signup-input::placeholder {
+  color: var(--tan);
+  font-weight: 700;
+}
+
+.signup-input:focus {
+  outline: none;
+  border-color: var(--brown);
+}
+
+.signup-fields .signup-input:nth-child(1),
+.signup-fields .signup-input:nth-child(2) {
+  grid-column: 1 / -1;
+}
+
+.signup-card button[type="submit"] {
+  margin: 4px 0 0;
+  padding: 0.75rem 2.6rem;
+  background: var(--brown);
+  color: var(--paper);
+  border-radius: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.signup-card button[type="submit"]:hover {
+  background: var(--brown-dark);
+  color: var(--paper);
+}
+
+.signup-status {
+  min-height: 1.25rem;
+  margin: 14px 0 0;
+  color: var(--brown-dark);
+  font-weight: 700;
+}
+
 .signup-hidden {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* tag checkboxes must receive the click; pointer-events: none blocks the label toggle */
 .signup-tag .signup-hidden {
   inset: 0;
   width: 100%;
@@ -114,4 +200,23 @@
   margin: 0;
   cursor: pointer;
   pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .signup-card {
+    padding: 28px 18px 24px;
+  }
+
+  .signup-avatars {
+    gap: 16px;
+  }
+
+  .signup-avatar-img {
+    width: 92px;
+    height: 92px;
+  }
+
+  .signup-fields {
+    grid-template-columns: 1fr;
+  }
 }

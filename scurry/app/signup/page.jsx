@@ -63,7 +63,7 @@ export default function Signup() {
   return (
     <main className="signup-page">
       <form className="signup-card" onSubmit={handleSignup}>
-        <h1 className="signup-title">Let's Create Your Squirrel!</h1>
+        <h1 className="signup-title">Let&apos;s Create Your Squirrel</h1>
         <p className="signup-subtitle">choose your profile</p>
         <div className="signup-avatars">
           {avatars.map((a) => (
@@ -85,14 +85,13 @@ export default function Signup() {
 
         <div className="signup-fields">
           <input
-          className="signup-input"  
+            className="signup-input"
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-
           <input
             className="signup-input"
             type="password"
@@ -102,7 +101,6 @@ export default function Signup() {
             minLength={6}
             required
           />
-
           <input
             className="signup-input"
             type="text"
@@ -111,7 +109,6 @@ export default function Signup() {
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-
           <input
             className="signup-input"
             type="text"
@@ -120,39 +117,37 @@ export default function Signup() {
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-          </div>
+        </div>
 
-          {/* display interests and store them in state */}
-          <h2 className="signup-title">Choose Your Interests</h2>
-          <p className="signup-subtitle">select all that apply</p>
-          <div className="signup-tags">
-            {tags.map((tag) => {
+        <h2 className="signup-heading">Let&apos;s get to know you!</h2>
+        <p className="signup-subtitle">choose some tags to add for your profile (welcome to add or remove)</p>
+        <div className="signup-tags">
+          {tags.map((tag) => {
             const isChecked = interests.includes(tag.id);
             return (
-            <label key={tag.id}
-              className={`signup-tag ${isChecked ? "signup-selected" : ""}`}>
-              <input
-                type="checkbox"
-                className="signup-hidden"
-                checked={isChecked}
-                onChange={() =>
-                  setInterests((prev) =>
-                    isChecked ? prev.filter((id) => id !== tag.id) : [...prev, tag.id]
-                  )
-                }
-              />
-
-              <span className="signup-dot"></span>
-              {tag.label}
-            </label>
+              <label key={tag.id}
+                className={`signup-tag ${isChecked ? "signup-selected" : ""}`}>
+                <input
+                  type="checkbox"
+                  className="signup-hidden"
+                  checked={isChecked}
+                  onChange={() =>
+                    setInterests((prev) =>
+                      isChecked ? prev.filter((id) => id !== tag.id) : [...prev, tag.id]
+                    )
+                  }
+                />
+                <span className="signup-dot"></span>
+                {tag.label}
+              </label>
             );
-            })}
-          </div>
+          })}
+        </div>
 
-          <button type="submit">Sign Up</button>
+        <button type="submit">Sign Up</button>
       </form>
 
-      <p role="status">{message}</p>
+      <p className="signup-status" role="status">{message}</p>
     </main >
   );
 }
