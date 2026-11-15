@@ -19,6 +19,12 @@ import Groups from "./groups/groups";
 import "../styles/signup.css";
 import "../styles/profile.css";
 
+function initials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  if (parts.length >= 2) return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+  return (parts[0] || "??").slice(0, 2).toUpperCase();
+}
+
 export default function Profile() {
   const [openPopup, setOpenPopup] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -63,10 +69,17 @@ export default function Profile() {
         setFriends(
           docs
             .filter((entry) => entry.exists())
-            .map((entry) => ({
-              id: entry.id,
-              name: `${entry.data().firstName} ${entry.data().lastName}`,
-            }))
+            .map((entry) => {
+              const data = entry.data();
+              const first = data.firstName || "";
+              const last = data.lastName || "";
+              const handle = [first, last].filter(Boolean).join(".").toLowerCase().replace(/\s+/g, "");
+              return {
+                id: entry.id,
+                name: `${first} ${last}`.trim() || "Friend",
+                handle: handle ? `@${handle}` : "",
+              };
+            })
         );
       });
 
@@ -87,7 +100,8 @@ export default function Profile() {
 
   const avatar = avatars.find((item) => item.id === profile?.avatar) || avatars[0];
   const firstName = profile?.firstName || "";
-  const displayName = firstName ? firstName.toUpperCase() : "PROFILE";
+  const lastName = profile?.lastName || "";
+  const displayName = [firstName, lastName].filter(Boolean).join(" ") || "Your profile";
   const interestLabels = (profile?.interests || []).map(
     (id) => tags.find((tag) => tag.id === id)?.label || id
   );
@@ -156,37 +170,43 @@ export default function Profile() {
 
   return (
     <main className="profile-page">
-      <div className="profile-layout">
-        <section className="profile-card profile-identity">
-          <div className="profile-top">
-            <img className="profile-pic" src={avatar.src} alt={avatar.label} />
-            <div className="profile-intro">
-              <h1>{displayName}</h1>
-              {profile?.friendCode && (
-                <p className="profile-code">Friend Code: {profile.friendCode}</p>
-              )}
-              {interestLabels.length > 0 && (
-                <div className="profile-tags">
-                  {interestLabels.map((label) => (
-                    <span key={label} className="profile-tag">{label.toLowerCase()}</span>
-                  ))}
-                </div>
-              )}
-              <button type="button" onClick={startEdit}>edit profile</button>
-              {editMessage && openPopup !== "edit" && <p>{editMessage}</p>}
+      <header className="profile-head">
+        <div>
+          <h1 className="profile-title">Scurry Friends</h1>
+          <p className="profile-lede">
+            See who you&apos;ve added and the crews you&apos;re already part of around campus.
+          </p>
+        </div>
+      </header>
+
+      {editMessage && openPopup !== "edit" && <p className="profile-status">{editMessage}</p>}
+
+      <div className="profile-columns">
+      <section className="profile-you">
+        <img className="profile-pic" src={avatar.src} alt={avatar.label} />
+        <div>
+          <p className="profile-you-name">{displayName}</p>
+          {profile?.friendCode && (
+            <p className="profile-code">Friend code {profile.friendCode}</p>
+          )}
+          <p className={profile?.bio ? "profile-bio-text" : "profile-bio-text profile-empty"}>
+            {profile?.bio || "Write a little about yourself"}
+          </p>
+          {interestLabels.length > 0 && (
+            <div className="profile-tags">
+              {interestLabels.map((label) => (
+                <span key={label} className="profile-tag">{label.toLowerCase()}</span>
+              ))}
             </div>
-          </div>
-
-          <h2>{firstName ? `${firstName.toLowerCase()} bio` : "bio"}</h2>
-          <div className="profile-bio-wrap">
-            <p className={profile?.bio ? "profile-bio-text" : "profile-bio-text profile-empty"}>
-              {profile?.bio || "write a little about yourself"}
-            </p>
-          </div>
-
-          <h2>bookmarks</h2>
+          )}
+        </div>
+        <button className="profile-edit" type="button" onClick={startEdit}>
+          edit profile
+        </button>
+        <div className="profile-bookmarks">
+          <h2>Bookmarks</h2>
           {bookmarks.length === 0 ? (
-            <p className="profile-empty">none :c</p>
+            <p className="profile-empty">None yet</p>
           ) : (
             <ul className="profile-list">
               {bookmarks.map((placeName) => (
@@ -226,46 +246,68 @@ export default function Profile() {
               ))}
             </ul>
           )}
-        </section>
+        </div>
+      </section>
 
-        <section className="profile-card profile-side">
-          <h2>current group</h2>
-          {groups.length === 0 ? (
-            <p className="profile-empty">none :c</p>
-          ) : (
-            <ul className="profile-list">
-              {groups.map((group) => (
-                <li key={group.id}>{group.name}</li>
-              ))}
-            </ul>
-          )}
-          <button
-            className={openPopup === "groups" ? "profile-open active" : "profile-open"}
-            type="button"
-            onClick={() => setOpenPopup("groups")}
-          >
-            groups
-          </button>
-        </section>
-
-        <section className="profile-card profile-side">
-          <h2>friends</h2>
+        <section className="profile-col">
+          <div className="profile-col-head">
+            <div>
+              <h2>Added Friends</h2>
+              <p>Students you&apos;ve already added to your Scurry crew.</p>
+            </div>
+            <button className="profile-action" type="button" onClick={() => setOpenPopup("friends")}>
+              Add Friend
+            </button>
+          </div>
           {friends.length === 0 ? (
-            <p className="profile-empty">none :c</p>
+            <p className="profile-empty-card">No friends yet. Add someone with their friend code.</p>
           ) : (
-            <ul className="profile-list">
+            <ul className="profile-rows">
               {friends.map((friend) => (
-                <li key={friend.id}>{friend.name}</li>
+                <li key={friend.id} className="profile-row">
+                  <span className="profile-avatar" aria-hidden="true">{initials(friend.name)}</span>
+                  <div className="profile-person">
+                    <p className="profile-name">{friend.name}</p>
+                    {friend.handle && <p className="profile-handle">{friend.handle}</p>}
+                  </div>
+                  <span className="profile-pill">Added</span>
+                </li>
               ))}
             </ul>
           )}
-          <button
-            className={openPopup === "friends" ? "profile-open active" : "profile-open"}
-            type="button"
-            onClick={() => setOpenPopup("friends")}
-          >
-            friends
-          </button>
+        </section>
+
+        <section className="profile-col">
+          <div className="profile-col-head">
+            <div>
+              <h2>Your Groups</h2>
+              <p>Crews you&apos;re already part of around campus.</p>
+            </div>
+            <button className="profile-action" type="button" onClick={() => setOpenPopup("groups")}>
+              create/join
+            </button>
+          </div>
+          {groups.length === 0 ? (
+            <p className="profile-empty-card">No crews yet. Create one or join with an invite code.</p>
+          ) : (
+            <ul className="profile-rows">
+              {groups.map((group) => {
+                const count = (group.members || []).length;
+                return (
+                  <li key={group.id} className="profile-row">
+                    <span className="profile-avatar" aria-hidden="true">{initials(group.name || "Group")}</span>
+                    <div className="profile-person">
+                      <p className="profile-name">{group.name}</p>
+                      <p className="profile-handle">
+                        {count} {count === 1 ? "member" : "members"}
+                      </p>
+                    </div>
+                    <span className="profile-pill">Member</span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </section>
       </div>
 
