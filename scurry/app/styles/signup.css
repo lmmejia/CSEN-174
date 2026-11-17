@@ -138,7 +138,9 @@
 }
 
 .signup-input {
+  box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   padding: 11px 14px;
   border: 2px solid transparent;
   border-radius: 10px;
