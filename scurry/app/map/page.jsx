@@ -15,6 +15,10 @@ const PIN_IMAGES = {
     coffee: '/coffee-icon.png',
     shopping: '/shopping-icon.png',
     activity: '/activity-icon.png',
+    boba: '/boba-icon.png',
+    dessert: '/dessert-icon.png',
+    matcha: '/matcha-icon.png',
+    transport: '/transport-icon.png',
     default: '/bookmark-icon.png',
 }
 const bookmarkManager = new BookmarkManager();
