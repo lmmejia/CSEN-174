@@ -8,7 +8,6 @@ import { doc, setDoc, serverTimestamp, collection, query, where, getDocs } from 
 import { avatars } from "./profilepics";
 import "../styles/signup.css";
 
-//create a custom code for friends
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 function randomCode(length = 6) {
@@ -36,7 +35,7 @@ export default function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [interests, setInterests] = useState([]);
-  const [avatar, setAvatar] = useState(avatars[0].id); // default to first
+  const [avatar, setAvatar] = useState(avatars[0].id); 
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -49,7 +48,7 @@ export default function Signup() {
         lastName,
         interests,
         avatar,
-        friendCode: await generateUniqueCode(), // generate a unique friend code
+        friendCode: await generateUniqueCode(), 
         friends: [],
         createdAt: serverTimestamp(),
       });
@@ -64,7 +63,7 @@ export default function Signup() {
     <main className="signup-page">
       <form className="signup-card" onSubmit={handleSignup}>
         <h1 className="signup-title">Let&apos;s Create Your Squirrel</h1>
-        <p className="signup-subtitle">choose your profile</p>
+        <p className="signup-subtitle">Choose your profile</p>
         <div className="signup-avatars">
           {avatars.map((a) => (
             <label key={a.id}
@@ -120,7 +119,7 @@ export default function Signup() {
         </div>
 
         <h2 className="signup-heading">Let&apos;s get to know you!</h2>
-        <p className="signup-subtitle">choose some tags to add for your profile (welcome to add or remove)</p>
+        <p className="signup-subtitle">Choose some tags to add for your profile (welcome to add or remove)</p>
         <div className="signup-tags">
           {tags.map((tag) => {
             const isChecked = interests.includes(tag.id);
@@ -150,4 +149,5 @@ export default function Signup() {
       <p className="signup-status" role="status">{message}</p>
     </main >
   );
-}
+} 
+

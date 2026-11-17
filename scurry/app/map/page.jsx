@@ -240,7 +240,7 @@ return (
     <main className="map-page">
         <header className="map-header">
             <h1>Find a place to Scurry</h1>
-            <p>click a pin to bookmark a hangout spot</p>
+            <p>Click a pin to bookmark a hangout spot</p>
         </header>
 
         <div className="map-content">
@@ -249,7 +249,7 @@ return (
             <aside className="map-panel">
             <div className="filter-buttons">
                 <h2>Categories</h2>
-                {preferenceState === "loading" && <p>loading your preferences...</p>}
+                {preferenceState === "loading" && <p>Loading your preferences...</p>}
                 {preferenceState === "signed-out" && <p>Log in to see your categories.</p>}
                 {preferenceState === "ready" && preferenceTags.length === 0 && (
                     <p>Add preferences on your profile to see categories.</p>
@@ -278,7 +278,7 @@ return (
 
             <div className="filter-group">
                 <h2>Filters</h2>
-                <p>Once picked a category, apply these filters!</p>
+                <p>Once you've picked a category, apply these filters!</p>
                 <h3>Transportation</h3>
                 <div className="filter-buttons">
                 {['walking', 'car'].map((transport) => (

@@ -57,7 +57,7 @@ export default function Login() {
             <div className="login-shell">
                 <section className="login-aside">
                     <h1 className="login-title">Welcome Back</h1>
-                    <p className="login-subtitle">Log in to keep scurrying</p>
+                    <p className="login-subtitle">Log in to keep Scurrying</p>
                 </section>
                 <form className="login-body" onSubmit={handleLogin}>
                     <label className="login-label">

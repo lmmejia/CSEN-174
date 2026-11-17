@@ -16,10 +16,9 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-// characters used to build an invite code like SCURRY-8F2K
 const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-// make one random code: "SCURRY-" plus 4 characters
+// make random code
 function randomCode() {
   let suffix = "";
   for (let i = 0; i < 4; i++) {
@@ -302,7 +301,7 @@ export default function Groups({ onClose }) {
                       onChange={(e) =>
                         setAddCodes((prev) => ({ ...prev, [g.id]: e.target.value }))
                       }
-                      placeholder="enter friend code"
+                      placeholder="Enter friend code"
                     />
                     <button onClick={() => handleAddMember(g)}>add</button>
                   </div>

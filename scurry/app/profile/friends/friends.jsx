@@ -97,7 +97,7 @@ export default function Friends({ onClose }) {
       //check if request already sent to you: accept it
       const incoming = await getDoc(doc(db, "friendRequests", `${friendUid}_${myUid}`));
       if(incoming.exists()) {
-        setError("Friend request already was sent to you. Accept it below");
+        setError("Friend request already sent to you. Accept it below");
         return;
       }
 
@@ -215,7 +215,7 @@ export default function Friends({ onClose }) {
       <input
         value={friendCode}
         onChange={(e) => setFriendCode(e.target.value)}
-        placeholder="enter friend code"
+        placeholder="Enter friend code"
       />
 
       <button onClick={handleSendRequest}>send request</button>

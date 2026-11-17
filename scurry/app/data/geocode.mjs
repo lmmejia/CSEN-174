@@ -2,7 +2,7 @@
 
 const filePath = "app/data/geocoded.json";
 
-// Locations that Nominatim couldn't find by name
+// Locations that Nominatim couldn't find 
 const places = [
   {
     name: "Shawarmaji",
@@ -45,7 +45,7 @@ const places = [
 const sleep = (ms) =>
   new Promise(resolve => setTimeout(resolve, ms));
 
-// Load existing locations
+
 let results = [];
 
 try {
@@ -112,7 +112,6 @@ for (const place of places) {
     console.log(`Not found: ${place.name}`);
   }
 
-  // Wait between requests
   await sleep(1500);
 }
 

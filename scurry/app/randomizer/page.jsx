@@ -142,7 +142,7 @@ export default function RandomizerPage() {
       <section className="randomizer-card">
         <h1>randomizer</h1>
 
-        {status === "loading" && <p className="randomizer-lead">loading...</p>}
+        {status === "loading" && <p className="randomizer-lead">Loading...</p>}
 
         {status === "signed-out" && (
           <>
@@ -154,7 +154,7 @@ export default function RandomizerPage() {
         {status === "ready" && groups.length === 0 && (
           <>
             <p className="randomizer-lead">Join a friend group before you can randomize.</p>
-            <Link className="btn" href="/profile">go to groups</Link>
+            <Link className="btn" href="/profile">Go to groups</Link>
           </>
         )}
 
@@ -180,7 +180,7 @@ export default function RandomizerPage() {
               <div className="randomizer-section">
                 <h2>who is here</h2>
                 {members.length === 0 ? (
-                  <p className="randomizer-empty">nobody in this group yet</p>
+                  <p className="randomizer-empty">Nobody in this group yet</p>
                 ) : (
                   <div className="randomizer-members">
                     {members.map((member) => {
