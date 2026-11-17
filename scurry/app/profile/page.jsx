@@ -73,11 +73,10 @@ export default function Profile() {
               const data = entry.data();
               const first = data.firstName || "";
               const last = data.lastName || "";
-              const handle = [first, last].filter(Boolean).join(".").toLowerCase().replace(/\s+/g, "");
               return {
                 id: entry.id,
                 name: `${first} ${last}`.trim() || "Friend",
-                handle: handle ? `@${handle}` : "",
+                avatar: data.avatar,
               };
             })
         );
@@ -263,16 +262,22 @@ export default function Profile() {
             <p className="profile-empty-card">No friends yet. Add someone with their friend code.</p>
           ) : (
             <ul className="profile-rows">
-              {friends.map((friend) => (
-                <li key={friend.id} className="profile-row">
-                  <span className="profile-avatar" aria-hidden="true">{initials(friend.name)}</span>
-                  <div className="profile-person">
-                    <p className="profile-name">{friend.name}</p>
-                    {friend.handle && <p className="profile-handle">{friend.handle}</p>}
-                  </div>
-                  <span className="profile-pill">Added</span>
-                </li>
-              ))}
+              {friends.map((friend) => {
+                const friendAvatar = avatars.find((item) => item.id === friend.avatar) || avatars[0];
+                return (
+                  <li key={friend.id} className="profile-row">
+                    <img
+                      className="profile-avatar"
+                      src={friendAvatar.src}
+                      alt=""
+                    />
+                    <div className="profile-person">
+                      <p className="profile-name">{friend.name}</p>
+                    </div>
+                    <span className="profile-pill">Added</span>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </section>

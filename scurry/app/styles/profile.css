@@ -217,6 +217,7 @@
   color: #6b513c;
   font-size: 0.82rem;
   font-weight: 800;
+  object-fit: cover;
 }
 
 .profile-person {
