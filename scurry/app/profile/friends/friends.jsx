@@ -4,10 +4,22 @@ import { auth, db } from "../../../lib/firebase";
 import {
   doc, getDoc, setDoc, deleteDoc, updateDoc, arrayUnion, arrayRemove, onSnapshot, collection, query, where, getDocs, serverTimestamp
 } from "firebase/firestore";
+import { avatars } from "../../signup/profilepics";
+
+function personFromUser(userDoc, uid) {
+  const data = userDoc.data() || {};
+  const name = `${data.firstName || ""} ${data.lastName || ""}`.trim();
+  return {
+    uid,
+    name: userDoc.exists() && name ? name : "Unknown",
+    avatar: data.avatar,
+  };
+}
 
 export default function Friends({ onClose }) {
   const [friends, setFriends] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [outgoing, setOutgoing] = useState([]);
   const [friendCode, setFriendCode] = useState("");
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
@@ -15,6 +27,7 @@ export default function Friends({ onClose }) {
   useEffect(() => {
     let unsubFriends = null;
     let unsubRequests = null;
+    let unsubOutgoing = null;
 
     const unsubAuth = auth.onAuthStateChanged((user) => {
       if (unsubFriends) {
@@ -23,9 +36,13 @@ export default function Friends({ onClose }) {
       if (unsubRequests) {
         unsubRequests();
       }
+      if (unsubOutgoing) {
+        unsubOutgoing();
+      }
       if (!user) {
         setFriends([]);
         setRequests([]);
+        setOutgoing([]);
         return;
       }
 
@@ -47,10 +64,21 @@ export default function Friends({ onClose }) {
         const list = await Promise.all(snap.docs.map(async (d) => {
           const fromUid = d.data().fromUid;
           const userDoc = await getDoc(doc(db, "users", fromUid));
-          const name = userDoc.exists() ? `${userDoc.data().firstName} ${userDoc.data().lastName}` : "Unknown";
-          return { id: d.id, fromUid, name };
+          return { id: d.id, fromUid, ...personFromUser(userDoc, fromUid) };
         }));
         setRequests(list);
+      }
+    );
+
+    unsubOutgoing = onSnapshot(
+      query(collection(db, "friendRequests"), where("fromUid", "==", user.uid)),
+      async (snap) => {
+        const list = await Promise.all(snap.docs.map(async (d) => {
+          const toUid = d.data().toUid;
+          const userDoc = await getDoc(doc(db, "users", toUid));
+          return { id: d.id, toUid, ...personFromUser(userDoc, toUid) };
+        }));
+        setOutgoing(list);
       }
     );
   });
@@ -58,6 +86,7 @@ export default function Friends({ onClose }) {
       unsubAuth();
       if (unsubFriends) unsubFriends();
       if (unsubRequests) unsubRequests();
+      if (unsubOutgoing) unsubOutgoing();
     };
   }, []);
 
@@ -184,18 +213,49 @@ export default function Friends({ onClose }) {
   return (
     <div>
       <h1>Add a Friend</h1>
-      <h2>Incoming Friend Requests</h2>
+      <h2 className="profile-subhead">Incoming</h2>
       {requests.length === 0 ? (
-        <p>none :c</p>
+        <p className="profile-empty-card">No incoming requests.</p>
       ) : (
-        <ul>
-          {requests.map((r) => (
-            <li key={r.id}>
-              {r.name}{" "}
-              <button onClick={() => handleAccept(r)}>accept</button>{" "}
-              <button onClick={() => handleDecline(r)}>decline</button>
-            </li>
-          ))}
+        <ul className="profile-rows">
+          {requests.map((r) => {
+            const requestAvatar = avatars.find((item) => item.id === r.avatar) || avatars[0];
+            return (
+              <li key={r.id} className="profile-row">
+                <img className="profile-avatar" src={requestAvatar.src} alt="" />
+                <div className="profile-person">
+                  <p className="profile-name">{r.name}</p>
+                </div>
+                <div className="profile-row-actions">
+                  <button className="profile-mini" type="button" onClick={() => handleAccept(r)}>accept</button>
+                  <button className="profile-mini profile-mini-ghost" type="button" onClick={() => handleDecline(r)}>decline</button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      <h2 className="profile-subhead">Sent</h2>
+      {outgoing.length === 0 ? (
+        <p className="profile-empty-card">No sent requests.</p>
+      ) : (
+        <ul className="profile-rows">
+          {outgoing.map((r) => {
+            const requestAvatar = avatars.find((item) => item.id === r.avatar) || avatars[0];
+            return (
+              <li key={r.id} className="profile-row">
+                <img className="profile-avatar" src={requestAvatar.src} alt="" />
+                <div className="profile-person">
+                  <p className="profile-name">{r.name}</p>
+                </div>
+                <div className="profile-row-actions">
+                  <span className="profile-pill">Pending</span>
+                  <button className="profile-mini profile-mini-ghost" type="button" onClick={() => handleDecline(r)}>cancel</button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
 

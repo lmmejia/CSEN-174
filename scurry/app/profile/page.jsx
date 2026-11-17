@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { auth, db } from "../../lib/firebase";
 import {
   arrayRemove,
+  arrayUnion,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   onSnapshot,
@@ -32,6 +34,9 @@ export default function Profile() {
   const [draft, setDraft] = useState(null);
   const [editMessage, setEditMessage] = useState("");
   const [friends, setFriends] = useState([]);
+  const [incoming, setIncoming] = useState([]);
+  const [outgoing, setOutgoing] = useState([]);
+  const [requestMessage, setRequestMessage] = useState("");
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
@@ -45,20 +50,46 @@ export default function Profile() {
   useEffect(() => {
     let unsubUser = null;
     let unsubGroups = null;
+    let unsubIncoming = null;
+    let unsubOutgoing = null;
+    let incomingTick = 0;
+    let outgoingTick = 0;
 
     const unsubAuth = auth.onAuthStateChanged((user) => {
       if (unsubUser) unsubUser();
       if (unsubGroups) unsubGroups();
+      if (unsubIncoming) unsubIncoming();
+      if (unsubOutgoing) unsubOutgoing();
 
       if (!user) {
         setUserId(null);
         setProfile(null);
         setFriends([]);
+        setIncoming([]);
+        setOutgoing([]);
         setGroups([]);
         return;
       }
 
       setUserId(user.uid);
+
+      unsubIncoming = onSnapshot(
+        query(collection(db, "friendRequests"), where("toUid", "==", user.uid)),
+        async (snap) => {
+          const tick = ++incomingTick;
+          const list = await loadRequestPeople(snap, "fromUid");
+          if (tick === incomingTick) setIncoming(list);
+        }
+      );
+
+      unsubOutgoing = onSnapshot(
+        query(collection(db, "friendRequests"), where("fromUid", "==", user.uid)),
+        async (snap) => {
+          const tick = ++outgoingTick;
+          const list = await loadRequestPeople(snap, "toUid");
+          if (tick === outgoingTick) setOutgoing(list);
+        }
+      );
 
       unsubUser = onSnapshot(doc(db, "users", user.uid), async (snap) => {
         const data = snap.data() || {};
@@ -94,8 +125,27 @@ export default function Profile() {
       unsubAuth();
       if (unsubUser) unsubUser();
       if (unsubGroups) unsubGroups();
+      if (unsubIncoming) unsubIncoming();
+      if (unsubOutgoing) unsubOutgoing();
     };
   }, []);
+
+  async function loadRequestPeople(snap, uidField) {
+    return Promise.all(
+      snap.docs.map(async (entry) => {
+        const otherUid = entry.data()[uidField];
+        const person = await getDoc(doc(db, "users", otherUid));
+        const data = person.data() || {};
+        const name = `${data.firstName || ""} ${data.lastName || ""}`.trim();
+        return {
+          id: entry.id,
+          uid: otherUid,
+          name: person.exists() && name ? name : "Unknown",
+          avatar: data.avatar,
+        };
+      })
+    );
+  }
 
   const avatar = avatars.find((item) => item.id === profile?.avatar) || avatars[0];
   const firstName = profile?.firstName || "";
@@ -157,6 +207,32 @@ export default function Profile() {
       setDraft(null);
     } catch (error) {
       setEditMessage(error.message);
+    }
+  }
+
+  async function handleAccept(request) {
+    if (!userId) return;
+    setRequestMessage("");
+    try {
+      await updateDoc(doc(db, "users", userId), {
+        friends: arrayUnion(request.uid),
+      });
+      await updateDoc(doc(db, "users", request.uid), {
+        friends: arrayUnion(userId),
+      });
+      await deleteDoc(doc(db, "friendRequests", request.id));
+    } catch (error) {
+      setRequestMessage(error.message);
+    }
+  }
+
+  async function handleDismissRequest(request) {
+    if (!userId) return;
+    setRequestMessage("");
+    try {
+      await deleteDoc(doc(db, "friendRequests", request.id));
+    } catch (error) {
+      setRequestMessage(error.message);
     }
   }
 
@@ -258,6 +334,66 @@ export default function Profile() {
               Add Friend
             </button>
           </div>
+          {requestMessage && <p className="profile-status">{requestMessage}</p>}
+
+          <div className="profile-requests">
+            <div>
+              <h3 className="profile-subhead">Incoming</h3>
+              {incoming.length === 0 ? (
+                <p className="profile-empty-card">No incoming requests.</p>
+              ) : (
+                <ul className="profile-rows">
+                  {incoming.map((request) => {
+                    const requestAvatar = avatars.find((item) => item.id === request.avatar) || avatars[0];
+                    return (
+                      <li key={request.id} className="profile-row">
+                        <img className="profile-avatar" src={requestAvatar.src} alt="" />
+                        <div className="profile-person">
+                          <p className="profile-name">{request.name}</p>
+                        </div>
+                        <div className="profile-row-actions">
+                          <button className="profile-mini" type="button" onClick={() => handleAccept(request)}>
+                            Accept
+                          </button>
+                          <button className="profile-mini profile-mini-ghost" type="button" onClick={() => handleDismissRequest(request)}>
+                            Decline
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+
+            <div>
+              <h3 className="profile-subhead">Sent</h3>
+              {outgoing.length === 0 ? (
+                <p className="profile-empty-card">No sent requests.</p>
+              ) : (
+                <ul className="profile-rows">
+                  {outgoing.map((request) => {
+                    const requestAvatar = avatars.find((item) => item.id === request.avatar) || avatars[0];
+                    return (
+                      <li key={request.id} className="profile-row">
+                        <img className="profile-avatar" src={requestAvatar.src} alt="" />
+                        <div className="profile-person">
+                          <p className="profile-name">{request.name}</p>
+                        </div>
+                        <div className="profile-row-actions">
+                          <span className="profile-pill">Pending</span>
+                          <button className="profile-mini profile-mini-ghost" type="button" onClick={() => handleDismissRequest(request)}>
+                            Cancel
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          </div>
+
           {friends.length === 0 ? (
             <p className="profile-empty-card">No friends yet. Add someone with their friend code.</p>
           ) : (
